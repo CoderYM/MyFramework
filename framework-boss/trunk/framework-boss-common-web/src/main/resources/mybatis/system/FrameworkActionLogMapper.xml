@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+
+<mapper namespace="com.allinpay.its.boss.system.permission.dao.IFrameworkActionLogDao">
+	<resultMap id="FrameworkActionLogResult" type="FrameworkActionLog">
+		<result property="id" column="ID" />
+		<result property="logTime" column="LOG_TIME" />
+		<result property="logUser" column="LOG_USER" />
+		<result property="logOperate" column="LOG_OPERATE" />
+		<result property="logContent" column="LOG_CONTENT" />
+		<result property="remark" column="REMARK" />
+		<result property="version" column="VERSION" />
+		<result property="logOperateClass" column="LOG_OPERATE_CLASS" />
+		<result property="logOperateMethod" column="LOG_OPERATE_METHOD" />
+		<result property="logOperateResult" column="LOG_OPERATE_RESULT" />
+		<result property="logType" column="LOG_TYPE" />
+		<result property="isAuthed" column="IS_AUTHED" />
+		<result property="logOperateActionName" column="LOG_OPERATE_ACTION_NAME" />
+		<result property="changeTableInfo" column="CHANGE_TABLE_INFO" />
+	</resultMap>
+	<select id="selectAllFrameworkActionLog" resultMap="FrameworkActionLogResult">
+		SELECT * FROM
+		FRAMEWORK_ACTION_LOG
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="FrameworkActionLog_columns">
+	    <![CDATA[
+        ID ,LOG_TIME ,LOG_USER ,LOG_OPERATE ,LOG_CONTENT ,REMARK ,VERSION ,LOG_OPERATE_CLASS ,LOG_OPERATE_METHOD ,LOG_OPERATE_RESULT ,LOG_TYPE ,IS_AUTHED ,LOG_OPERATE_ACTION_NAME ,CHANGE_TABLE_INFO 
+	    ]]>
+	</sql>
+	
+	<sql id="FrameworkActionLog_columns_as">
+	    <![CDATA[
+        ID as id,LOG_TIME as logTime,LOG_USER as logUser,LOG_OPERATE as logOperate,LOG_CONTENT as logContent,REMARK as remark,VERSION as version,LOG_OPERATE_CLASS as logOperateClass,LOG_OPERATE_METHOD as logOperateMethod,LOG_OPERATE_RESULT as logOperateResult,LOG_TYPE as logType,IS_AUTHED as isAuthed,LOG_OPERATE_ACTION_NAME as logOperateActionName,CHANGE_TABLE_INFO as changeTableInfo
+	    ]]>
+	</sql>
+
+	<insert id="insert_FrameworkActionLog" parameterType="FrameworkActionLog">
+    <![CDATA[
+        INSERT INTO FRAMEWORK_ACTION_LOG (
+        	ID ,
+        	LOG_TIME ,
+        	LOG_USER ,
+        	LOG_OPERATE ,
+        	LOG_CONTENT ,
+        	REMARK ,
+        	VERSION ,
+        	LOG_OPERATE_CLASS ,
+        	LOG_OPERATE_METHOD ,
+        	LOG_OPERATE_RESULT ,
+        	LOG_TYPE ,
+        	IS_AUTHED ,
+        	LOG_OPERATE_ACTION_NAME ,
+        	CHANGE_TABLE_INFO 
+        ) VALUES (
+        	#{id,jdbcType=NUMERIC} ,
+        	SYSDATE ,
+        	#{logUser,jdbcType=VARCHAR} ,
+        	#{logOperate,jdbcType=VARCHAR} ,
+        	#{logContent,jdbcType=VARCHAR} ,
+        	#{remark,jdbcType=VARCHAR} ,
+        	#{version,jdbcType=NUMERIC} ,
+        	#{logOperateClass,jdbcType=VARCHAR} ,
+        	#{logOperateMethod,jdbcType=VARCHAR} ,
+        	#{logOperateResult,jdbcType=VARCHAR} ,
+        	#{logType,jdbcType=VARCHAR} ,
+        	#{isAuthed,jdbcType=VARCHAR} ,
+        	#{logOperateActionName,jdbcType=VARCHAR} ,
+        	#{changeTableInfo,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_ACTION_LOG.NEXTVAL as ID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateById_FrameworkActionLog" parameterType="FrameworkActionLog">
+        UPDATE FRAMEWORK_ACTION_LOG 
+        <set>
+	        <if test="logTime != null">
+	        	LOG_TIME = #{logTime} ,
+			</if>
+	        <if test="logUser != null">
+	        	LOG_USER = #{logUser} ,
+			</if>
+	        <if test="logOperate != null">
+	        	LOG_OPERATE = #{logOperate} ,
+			</if>
+	        <if test="logContent != null">
+	        	LOG_CONTENT = #{logContent} ,
+			</if>
+	        <if test="remark != null">
+	        	REMARK = #{remark} ,
+			</if>
+	        <if test="version != null">
+	        	VERSION = #{version} ,
+			</if>
+	        <if test="logOperateClass != null">
+	        	LOG_OPERATE_CLASS = #{logOperateClass} ,
+			</if>
+	        <if test="logOperateMethod != null">
+	        	LOG_OPERATE_METHOD = #{logOperateMethod} ,
+			</if>
+	        <if test="logOperateResult != null">
+	        	LOG_OPERATE_RESULT = #{logOperateResult} ,
+			</if>
+	        <if test="logType != null">
+	        	LOG_TYPE = #{logType} ,
+			</if>
+	        <if test="isAuthed != null">
+	        	IS_AUTHED = #{isAuthed} ,
+			</if>
+	        <if test="logOperateActionName != null">
+	        	LOG_OPERATE_ACTION_NAME = #{logOperateActionName} ,
+			</if>
+	        <if test="changeTableInfo != null">
+	        	CHANGE_TABLE_INFO = #{changeTableInfo} 
+			</if>
+	        
+	    </set>
+        WHERE 
+	        ID = #{id} 
+	</update>
+
+	<delete id="deleteById_FrameworkActionLog">
+    <![CDATA[
+        DELETE FROM FRAMEWORK_ACTION_LOG WHERE
+        ID = #{id} 
+    ]]>
+	</delete>
+
+	<select id="selectByIdFrameworkActionLog" resultMap="FrameworkActionLogResult">
+		SELECT
+		<include refid="FrameworkActionLog_columns" />
+	    <![CDATA[
+	        FROM FRAMEWORK_ACTION_LOG 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+
+	<sql id="selectFrameworkActionLog_where">
+		<where>
+			
+			<if test="id != null">
+				and ID = #{id}
+			</if>
+			<if test="logTimeBegin != null">
+				and LOG_TIME >= #{logTimeBegin}
+			</if>
+			<if test="logTimeEnd != null">
+				and LOG_TIME &lt;= #{logTimeEnd}
+			</if>
+			
+			<if test="logUser != null">
+				and LOG_USER = #{logUser}
+			</if>
+			
+			<if test="logOperate != null">
+				and LOG_OPERATE = #{logOperate}
+			</if>
+			
+			<if test="logContent != null">
+				and LOG_CONTENT = #{logContent}
+			</if>
+			
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+			
+			<if test="version != null">
+				and VERSION = #{version}
+			</if>
+			
+			<if test="logOperateClass != null">
+				and LOG_OPERATE_CLASS = #{logOperateClass}
+			</if>
+			
+			<if test="logOperateMethod != null">
+				and LOG_OPERATE_METHOD = #{logOperateMethod}
+			</if>
+			
+			<if test="logOperateResult != null">
+				and LOG_OPERATE_RESULT = #{logOperateResult}
+			</if>
+			
+			<if test="logType != null">
+				and LOG_TYPE = #{logType}
+			</if>
+			
+			<if test="isAuthed != null">
+				and IS_AUTHED = #{isAuthed}
+			</if>
+			
+			<if test="logOperateActionName != null">
+				and LOG_OPERATE_ACTION_NAME = #{logOperateActionName}
+			</if>
+			
+			<if test="changeTableInfo != null">
+				and CHANGE_TABLE_INFO = #{changeTableInfo}
+			</if>
+		</where>
+	</sql>
+
+	<select id="select_FrameworkActionLogsCount" resultType="long">
+		SELECT count(*) FROM FRAMEWORK_ACTION_LOG
+		<include refid="selectFrameworkActionLog_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_FrameworkActionLogs" resultMap="FrameworkActionLogResult">
+		SELECT
+		<include refid="FrameworkActionLog_columns" />
+		FROM FRAMEWORK_ACTION_LOG
+		<include refid="selectFrameworkActionLog_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="FrameworkActionLog">
+		SELECT
+		<include refid="FrameworkActionLog_columns_as" />
+		 FROM FRAMEWORK_ACTION_LOG
+		WHERE 
+		        ID = #{pk_Id} 
+	</select>
+	
+	
+	<select id="findListByObj" resultMap="FrameworkActionLogResult">
+		SELECT
+		<include refid="FrameworkActionLog_columns" />
+		FROM FRAMEWORK_ACTION_LOG
+		<include refid="selectFrameworkActionLog_where" />
+	</select>
+</mapper>
+

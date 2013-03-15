@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.allinpay.its</groupId>
+    <artifactId>framework-boss-common</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>framework-boss-common-web</artifactId>
+  <packaging>war</packaging>
+  <dependencies>
+
+  <dependency>
+  	<groupId>com.allinpay.its</groupId>
+  	<artifactId>framework-boss-common-core</artifactId>
+  	<version>1.0.0-SNAPSHOT</version>
+  </dependency>
+  </dependencies>
+  
+  <build>
+		<finalName>framework-boss-web</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.8.v20121106</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webAppConfig>
+						<contextPath>/framework-web</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<configuration>
+					<contextReloadable>true</contextReloadable>
+					<webAppConfig>
+						<contextPath>/framework-web</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

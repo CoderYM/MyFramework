@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+
+<mapper namespace="com.allinpay.its.boss.system.permission.dao.IFrameworkSysActionDao">
+	<resultMap id="FrameworkSysActionResult" type="FrameworkSysAction">
+		<result property="id" column="ID" />
+		<result property="sysMenuId" column="SYS_MENU_ID" />
+		<result property="permissionCode" column="PERMISSION_CODE" />
+		<result property="actionName" column="ACTION_NAME" />
+		<result property="methodName" column="METHOD_NAME" />
+		<result property="simpleClassName" column="SIMPLE_CLASS_NAME" />
+		<result property="actionType" column="ACTION_TYPE" />
+		<result property="actionDes" column="ACTION_DES" />
+	</resultMap>
+	<select id="selectAllFrameworkSysAction" resultMap="FrameworkSysActionResult">
+		SELECT * FROM
+		FRAMEWORK_SYS_ACTION
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="FrameworkSysAction_columns">
+	    <![CDATA[
+        ID ,SYS_MENU_ID ,PERMISSION_CODE ,ACTION_NAME ,METHOD_NAME ,SIMPLE_CLASS_NAME ,ACTION_TYPE ,ACTION_DES 
+	    ]]>
+	</sql>
+	
+	<sql id="FrameworkSysAction_columns_as">
+	    <![CDATA[
+        ID as id,SYS_MENU_ID as sysMenuId,PERMISSION_CODE as permissionCode,ACTION_NAME as actionName,METHOD_NAME as methodName,SIMPLE_CLASS_NAME as simpleClassName,ACTION_TYPE as actionType,ACTION_DES as actionDes
+	    ]]>
+	</sql>
+
+	<insert id="insert_FrameworkSysAction" parameterType="FrameworkSysAction">
+    <![CDATA[
+        INSERT INTO FRAMEWORK_SYS_ACTION (
+        	ID ,
+        	SYS_MENU_ID ,
+        	PERMISSION_CODE ,
+        	ACTION_NAME ,
+        	METHOD_NAME ,
+        	SIMPLE_CLASS_NAME ,
+        	ACTION_TYPE ,
+        	ACTION_DES 
+        ) VALUES (
+        	#{id,jdbcType=NUMERIC} ,
+        	#{sysMenuId,jdbcType=NUMERIC} ,
+        	#{permissionCode,jdbcType=VARCHAR} ,
+        	#{actionName,jdbcType=VARCHAR} ,
+        	#{methodName,jdbcType=VARCHAR} ,
+        	#{simpleClassName,jdbcType=VARCHAR} ,
+        	#{actionType,jdbcType=VARCHAR} ,
+        	#{actionDes,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_SYS_ACTION.NEXTVAL as ID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateById_FrameworkSysAction" parameterType="FrameworkSysAction">
+        UPDATE FRAMEWORK_SYS_ACTION 
+        <set>
+	        <if test="sysMenuId != null">
+	        	SYS_MENU_ID = #{sysMenuId} ,
+			</if>
+	        <if test="permissionCode != null">
+	        	PERMISSION_CODE = #{permissionCode} ,
+			</if>
+	        <if test="actionName != null">
+	        	ACTION_NAME = #{actionName} ,
+			</if>
+	        <if test="methodName != null">
+	        	METHOD_NAME = #{methodName} ,
+			</if>
+	        <if test="simpleClassName != null">
+	        	SIMPLE_CLASS_NAME = #{simpleClassName} ,
+			</if>
+	        <if test="actionType != null">
+	        	ACTION_TYPE = #{actionType} ,
+			</if>
+	        <if test="actionDes != null">
+	        	ACTION_DES = #{actionDes} 
+			</if>
+	        
+	    </set>
+        WHERE 
+	        ID = #{id} 
+	</update>
+
+	<delete id="deleteById_FrameworkSysAction">
+    <![CDATA[
+        DELETE FROM FRAMEWORK_SYS_ACTION WHERE
+        ID = #{id} 
+    ]]>
+	</delete>
+
+	<select id="selectByIdFrameworkSysAction" resultMap="FrameworkSysActionResult">
+		SELECT
+		<include refid="FrameworkSysAction_columns" />
+	    <![CDATA[
+	        FROM FRAMEWORK_SYS_ACTION 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+
+	<sql id="selectFrameworkSysAction_where">
+		<where>
+			
+			<if test="id != null">
+				and ID = #{id}
+			</if>
+			
+			<if test="sysMenuId != null">
+				and SYS_MENU_ID = #{sysMenuId}
+			</if>
+			
+			<if test="permissionCode != null">
+				and PERMISSION_CODE = #{permissionCode}
+			</if>
+			
+			<if test="actionName != null">
+				and ACTION_NAME = #{actionName}
+			</if>
+			
+			<if test="methodName != null">
+				and METHOD_NAME = #{methodName}
+			</if>
+			
+			<if test="simpleClassName != null">
+				and SIMPLE_CLASS_NAME = #{simpleClassName}
+			</if>
+			
+			<if test="actionType != null">
+				and ACTION_TYPE = #{actionType}
+			</if>
+			
+			<if test="actionDes != null">
+				and ACTION_DES = #{actionDes}
+			</if>
+		</where>
+	</sql>
+
+	<select id="select_FrameworkSysActionsCount" resultType="long">
+		SELECT count(*) FROM FRAMEWORK_SYS_ACTION
+		<include refid="selectFrameworkSysAction_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_FrameworkSysActions" resultMap="FrameworkSysActionResult">
+		SELECT
+		<include refid="FrameworkSysAction_columns" />
+		FROM FRAMEWORK_SYS_ACTION
+		<include refid="selectFrameworkSysAction_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="FrameworkSysAction">
+		SELECT
+		<include refid="FrameworkSysAction_columns_as" />
+		 FROM FRAMEWORK_SYS_ACTION
+		WHERE 
+		        ID = #{pk_Id} 
+	</select>
+	
+	
+	<select id="findListByObj" resultMap="FrameworkSysActionResult">
+		SELECT
+		<include refid="FrameworkSysAction_columns" />
+		FROM FRAMEWORK_SYS_ACTION
+		<include refid="selectFrameworkSysAction_where" />
+	</select>
+</mapper>
+

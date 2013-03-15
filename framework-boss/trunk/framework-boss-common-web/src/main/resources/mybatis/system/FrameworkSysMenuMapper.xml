@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.allinpay.its.boss.system.menu.dao.IFrameworkSysMenuDao">
+
+	<sql id="FrameworkSysMenu_columns">
+	   <![CDATA[
+        ID ,PID ,SYS_MENU_CODE ,SYS_MENU_NAME ,SYS_MENU_URL ,IS_LEAF ,SYS_MENU_DESCRIPTION
+        , STATE, REMARK, CREATE_USER_ID, CREATE_TIME, MODIFY_USER_ID, MODIFY_TIME,
+         VERSION, ORDER_INDEX
+	    ]]>
+	</sql>
+
+	<sql id="selectmenulevel1Where">
+		<where>
+				PID = 0
+			<if test="sys_menu_code != null">
+				and SYS_MENU_CODE = #{sys_menu_code} 
+			</if>
+			<if test="sys_menu_name != null and sys_menu_name != ''">
+				and SYS_MENU_NAME = #{sys_menu_name} 
+			</if>
+			<if test="sys_menu_url != null">
+				and SYS_MENU_URL = #{sys_menu_url} 
+			</if>
+			<if test="sys_menu_description != null">
+				and SYS_MENU_DESCRIPTION = #{sys_menu_description}
+			</if>
+			<if test="state != null and state != ''">
+				and STATE = #{state}
+			</if>
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="selectmenulevel2Where">
+		<where>
+				<![CDATA[ PID > 0 ]]>
+			<if test="sys_menu_code != null">
+				and SYS_MENU_CODE = #{sys_menu_code} 
+			</if>
+			<if test="sys_menu_name != null and sys_menu_name != ''">
+				and SYS_MENU_NAME = #{sys_menu_name} 
+			</if>
+			<if test="sys_menu_url != null">
+				and SYS_MENU_URL = #{sys_menu_url} 
+			</if>
+				and IS_LEAF = '0'
+			<if test="sys_menu_description != null">
+				and SYS_MENU_DESCRIPTION = #{sys_menu_description}
+			</if>
+			<if test="state != null and state != ''">
+				and STATE = #{state}
+			</if>
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="selectmenulevel3Where">
+		<where>
+				<![CDATA[ PID > 0 ]]>
+			<if test="sys_menu_code != null">
+				and SYS_MENU_CODE = #{sys_menu_code} 
+			</if>
+			<if test="sys_menu_name != null and sys_menu_name != ''">
+				and SYS_MENU_NAME = #{sys_menu_name} 
+			</if>
+			<if test="sys_menu_url != null">
+				and SYS_MENU_URL = #{sys_menu_url} 
+			</if>
+				and IS_LEAF = '1'
+			<if test="sys_menu_description != null">
+				and SYS_MENU_DESCRIPTION = #{sys_menu_description}
+			</if>
+			<if test="state != null and state != ''">
+				and STATE = #{state}
+			</if>
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="selectTestWhere">
+		<where>
+			<if test="pid != null">
+				PID = #{pid} 
+			</if>
+			<if test="sys_menu_code != null">
+				and SYS_MENU_CODE = #{sys_menu_code} 
+			</if>
+			<if test="sys_menu_name != null and sys_menu_name != ''">
+				and SYS_MENU_NAME = #{sys_menu_name} 
+			</if>
+			<if test="sys_menu_url != null">
+				and SYS_MENU_URL = #{sys_menu_url} 
+			</if>
+			<if test="is_leaf != null">
+				and IS_LEAF = #{is_leaf} 
+			</if>
+			<if test="sys_menu_description != null">
+				and SYS_MENU_DESCRIPTION = #{sys_menu_description}
+			</if>
+			<if test="state != null">
+				and STATE = #{state}
+			</if>
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+		</where>
+	</sql>
+
+	<!-- 增加 -->
+	<insert id="insert_FrameworkSysMenu" parameterType="sysMenu">
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_SYS_MENU.NEXTVAL as ID FROM DUAL
+		</selectKey>
+		INSERT INTO FRAMEWORK_SYS_MENU (
+		ID,
+		PID ,
+		SYS_MENU_CODE ,
+		SYS_MENU_NAME ,
+		SYS_MENU_URL ,
+		IS_LEAF ,
+		SYS_MENU_DESCRIPTION ,
+		STATE ,
+		REMARK ,
+		CREATE_USER_ID ,
+		CREATE_TIME ,
+		MODIFY_USER_ID ,
+		MODIFY_TIME ,
+		VERSION ,
+		ORDER_INDEX 
+		) VALUES (
+		#{id,jdbcType=NUMERIC},
+		#{pid,jdbcType=NUMERIC} ,
+		#{sys_menu_code,jdbcType=VARCHAR} ,
+		#{sys_menu_name,jdbcType=VARCHAR},
+		#{sys_menu_url,jdbcType=VARCHAR} ,
+		#{is_leaf,jdbcType=VARCHAR} ,
+		#{sys_menu_description,jdbcType=VARCHAR} ,
+		#{state,jdbcType=VARCHAR} ,
+		#{remark,jdbcType=VARCHAR} ,
+		#{create_user_id,jdbcType=NUMERIC} ,
+		#{create_time,jdbcType=DATE} ,
+		#{modify_user_id,jdbcType=NUMERIC} ,
+		#{modify_time,jdbcType=DATE} ,
+		#{version,jdbcType=NUMERIC} ,
+		#{order_index,jdbcType=NUMERIC}
+		)
+	</insert>
+	
+	<update id="updateById_FrameworkSysMenu" parameterType="sysMenu">
+		UPDATE FRAMEWORK_SYS_MENU
+		<set>
+			<if test="sys_menu_name != null">
+				SYS_MENU_NAME = #{sys_menu_name} ,
+			</if>
+			<if test="sys_menu_url != null">
+				SYS_MENU_URL = #{sys_menu_url} ,
+			</if>
+			<if test="pid != null">
+				PID = #{pid} ,
+			</if>
+			<if test="sys_menu_code != null">
+				SYS_MENU_CODE = #{sys_menu_code} ,
+			</if>
+			<if test="sys_menu_description != null">
+				SYS_MENU_DESCRIPTION = #{sys_menu_description} ,
+			</if>
+			<if test="state != null">
+				STATE = #{state} ,
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark} ,
+			</if>
+			<if test="order_index != null">
+				ORDER_INDEX = #{order_index} ,
+			</if>
+		</set>
+		WHERE
+		ID = #{id}
+	</update>
+
+	<delete id="deleteById_FrameworkSysMenu">
+		<![CDATA[
+        DELETE FROM FRAMEWORK_SYS_MENU 
+        WHERE  ID = #{id}
+    ]]>
+	</delete>
+
+	<select id="selectPage_FrameworkSysMenus" resultType="sysMenu">
+		select
+		<include refid="FrameworkSysMenu_columns" />
+		from FRAMEWORK_SYS_MENU
+		<include refid="selectTestWhere" />
+	</select>
+	
+	<select id="select_FrameworkSysMenusCount" resultType="Long">
+		select count(*) from FRAMEWORK_SYS_MENU
+		<include refid="selectTestWhere" />
+	</select>
+	
+	<!-- for level one -->
+	<select id="selectmenulevel1" resultType="sysMenu">
+		select
+		<include refid="FrameworkSysMenu_columns" />
+		from FRAMEWORK_SYS_MENU
+		<include refid="selectmenulevel1Where" />
+		ORDER BY ORDER_INDEX 
+	</select>
+	
+	<select id="selectmenulevel1Count" resultType="Long">
+		select count(*) from FRAMEWORK_SYS_MENU
+		<include refid="selectmenulevel1Where" />
+	</select>
+	
+	<!-- for level two -->
+	<select id="selectmenulevel2" resultType="sysMenu">
+		select
+		<include refid="FrameworkSysMenu_columns" />
+		from FRAMEWORK_SYS_MENU
+		<include refid="selectmenulevel2Where" />
+		ORDER BY  PID,ORDER_INDEX
+	</select>
+	
+	<select id="selectmenulevel2Count" resultType="Long">
+		select count(*) from FRAMEWORK_SYS_MENU
+		<include refid="selectmenulevel2Where" />
+	</select>
+	
+	<!-- for level three -->
+	<select id="selectmenulevel3" resultType="sysMenu">
+		select
+		<include refid="FrameworkSysMenu_columns" />
+		from FRAMEWORK_SYS_MENU
+		<include refid="selectmenulevel3Where" />
+		ORDER BY  PID,ORDER_INDEX
+	</select>
+	
+	<select id="selectmenulevel3Count" resultType="Long">
+		select count(*) from FRAMEWORK_SYS_MENU
+		<include refid="selectmenulevel3Where" />
+	</select>
+
+	<select id="getById" parameterType="int" resultType="sysMenu">
+		select
+		<include refid="FrameworkSysMenu_columns" />
+		from  FRAMEWORK_SYS_MENU
+		WHERE ID = #{menuId}
+	</select>
+	
+	<select id="getMenuList" resultType="sysMenu">
+		select
+		<include refid="FrameworkSysMenu_columns" />
+		from  FRAMEWORK_SYS_MENU
+		<include refid="selectTestWhere" />
+	</select>
+	
+	<select id="getUserPermSysMenuIdByUserId" parameterType="int" resultType="sysMenu">
+		select distinct(sm.id) as id
+		from FRAMEWORK_USER_ROLE ur, FRAMEWORK_PERM_ASSIGN pa, FRAMEWORK_SYS_PERMISSION pm, FRAMEWORK_SYS_MENU sm
+		where
+		 		ur.SYS_ROLE_ID=pa.USER_DEP_ID
+		 and	pa.PERM_ID=pm.id
+		 and	pm.SYS_MENU_ID=sm.id
+		 and	ur.USER_ID=#{0}
+		 and	ur.state='00'
+		 and	pa.state='00'
+		 and	pm.state='00'
+		 and	sm.state='00'
+	</select>
+	
+	<select id="getUserPermSysMenuIdByPid" resultType="sysMenu">
+		select 
+		<include refid="FrameworkSysMenu_columns" />
+		from FRAMEWORK_SYS_MENU
+		where ID in
+		<foreach item="pid" index="index" collection="list"
+	      open="(" separator="," close=")">
+	        #{pid}
+	  	</foreach>
+	  	ORDER BY  ORDER_INDEX
+  </select>
+	
+</mapper>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+
+<mapper namespace="com.allinpay.its.boss.system.permission.dao.IFrameworkPermAssignDao">
+	<resultMap id="FrameworkPermAssignResult" type="FrameworkPermAssign">
+		<result property="id" column="ID" />
+		<result property="userDepId" column="USER_DEP_ID" />
+		<result property="userDepType" column="USER_DEP_TYPE" />
+		<result property="permId" column="PERM_ID" />
+		<result property="state" column="STATE" />
+		<result property="remark" column="REMARK" />
+		<result property="createUserId" column="CREATE_USER_ID" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="modifyUserId" column="MODIFY_USER_ID" />
+		<result property="modifyTime" column="MODIFY_TIME" />
+		<result property="version" column="VERSION" />
+	</resultMap>
+	<select id="selectAllFrameworkPermAssign" resultMap="FrameworkPermAssignResult">
+		SELECT * FROM
+		FRAMEWORK_PERM_ASSIGN
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="FrameworkPermAssign_columns">
+	    <![CDATA[
+        ID ,USER_DEP_ID ,USER_DEP_TYPE ,PERM_ID ,STATE ,REMARK ,CREATE_USER_ID ,CREATE_TIME ,MODIFY_USER_ID ,MODIFY_TIME ,VERSION 
+	    ]]>
+	</sql>
+	
+	<sql id="FrameworkPermAssign_columns_as">
+	    <![CDATA[
+        ID as id,USER_DEP_ID as userDepId,USER_DEP_TYPE as userDepType,PERM_ID as permId,STATE as state,REMARK as remark,CREATE_USER_ID as createUserId,CREATE_TIME as createTime,MODIFY_USER_ID as modifyUserId,MODIFY_TIME as modifyTime,VERSION as version
+	    ]]>
+	</sql>
+
+	<insert id="insert_FrameworkPermAssign" parameterType="FrameworkPermAssign">
+    <![CDATA[
+        INSERT INTO FRAMEWORK_PERM_ASSIGN (
+        	ID ,
+        	USER_DEP_ID ,
+        	USER_DEP_TYPE ,
+        	PERM_ID ,
+        	STATE ,
+        	REMARK ,
+        	CREATE_USER_ID ,
+        	CREATE_TIME ,
+        	MODIFY_USER_ID ,
+        	MODIFY_TIME ,
+        	VERSION 
+        ) VALUES (
+        	#{id,jdbcType=NUMERIC} ,
+        	#{userDepId,jdbcType=NUMERIC} ,
+        	#{userDepType,jdbcType=VARCHAR} ,
+        	#{permId,jdbcType=NUMERIC} ,
+        	#{state,jdbcType=VARCHAR} ,
+        	#{remark,jdbcType=VARCHAR} ,
+        	#{createUserId,jdbcType=NUMERIC} ,
+        	#{createTime,jdbcType=DATE} ,
+        	#{modifyUserId,jdbcType=NUMERIC} ,
+        	#{modifyTime,jdbcType=DATE} ,
+        	#{version,jdbcType=NUMERIC} 
+        )
+    ]]>
+		<!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_PERM_ASSIGN.NEXTVAL as ID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateById_FrameworkPermAssign" parameterType="FrameworkPermAssign">
+        UPDATE FRAMEWORK_PERM_ASSIGN 
+        <set>
+	        <if test="userDepId != null">
+	        	USER_DEP_ID = #{userDepId} ,
+			</if>
+	        <if test="userDepType != null">
+	        	USER_DEP_TYPE = #{userDepType} ,
+			</if>
+	        <if test="permId != null">
+	        	PERM_ID = #{permId} ,
+			</if>
+	        <if test="state != null">
+	        	STATE = #{state} ,
+			</if>
+	        <if test="remark != null">
+	        	REMARK = #{remark} ,
+			</if>
+	        <if test="createUserId != null">
+	        	CREATE_USER_ID = #{createUserId} ,
+			</if>
+	        <if test="createTime != null">
+	        	CREATE_TIME = #{createTime} ,
+			</if>
+	        <if test="modifyUserId != null">
+	        	MODIFY_USER_ID = #{modifyUserId} ,
+			</if>
+	        <if test="modifyTime != null">
+	        	MODIFY_TIME = #{modifyTime} ,
+			</if>
+	        <if test="version != null">
+	        	VERSION = #{version} 
+			</if>
+	        
+	    </set>
+        WHERE 
+	        ID = #{id} 
+	</update>
+
+	<delete id="deleteById_FrameworkPermAssign">
+    <![CDATA[
+        DELETE FROM FRAMEWORK_PERM_ASSIGN WHERE
+        ID = #{id} 
+    ]]>
+	</delete>
+
+	<select id="selectByIdFrameworkPermAssign" resultMap="FrameworkPermAssignResult">
+		SELECT
+		<include refid="FrameworkPermAssign_columns" />
+	    <![CDATA[
+	        FROM FRAMEWORK_PERM_ASSIGN 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+
+	<sql id="selectFrameworkPermAssign_where">
+		<where>
+			
+			<if test="id != null">
+				and ID = #{id}
+			</if>
+			
+			<if test="userDepId != null">
+				and USER_DEP_ID = #{userDepId}
+			</if>
+			
+			<if test="userDepType != null">
+				and USER_DEP_TYPE = #{userDepType}
+			</if>
+			
+			<if test="permId != null">
+				and PERM_ID = #{permId}
+			</if>
+			
+			<if test="state != null">
+				and STATE = #{state}
+			</if>
+			
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+			
+			<if test="createUserId != null">
+				and CREATE_USER_ID = #{createUserId}
+			</if>
+			<if test="createTimeBegin != null">
+				and CREATE_TIME >= #{createTimeBegin}
+			</if>
+			<if test="createTimeEnd != null">
+				and CREATE_TIME &lt;= #{createTimeEnd}
+			</if>
+			
+			<if test="modifyUserId != null">
+				and MODIFY_USER_ID = #{modifyUserId}
+			</if>
+			<if test="modifyTimeBegin != null">
+				and MODIFY_TIME >= #{modifyTimeBegin}
+			</if>
+			<if test="modifyTimeEnd != null">
+				and MODIFY_TIME &lt;= #{modifyTimeEnd}
+			</if>
+			
+			<if test="version != null">
+				and VERSION = #{version}
+			</if>
+		</where>
+	</sql>
+
+	<select id="select_FrameworkPermAssignsCount" resultType="long">
+		SELECT count(*) FROM FRAMEWORK_PERM_ASSIGN
+		<include refid="selectFrameworkPermAssign_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_FrameworkPermAssigns" resultMap="FrameworkPermAssignResult">
+		SELECT
+		<include refid="FrameworkPermAssign_columns" />
+		FROM FRAMEWORK_PERM_ASSIGN
+		<include refid="selectFrameworkPermAssign_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="FrameworkPermAssign">
+		SELECT
+		<include refid="FrameworkPermAssign_columns_as" />
+		 FROM FRAMEWORK_PERM_ASSIGN
+		WHERE 
+		        ID = #{pk_Id} 
+	</select>
+	
+	
+	<select id="findListByObj" resultMap="FrameworkPermAssignResult">
+		SELECT
+		<include refid="FrameworkPermAssign_columns" />
+		FROM FRAMEWORK_PERM_ASSIGN
+		<include refid="selectFrameworkPermAssign_where" />
+	</select>
+	
+	<update id="updateFrameworkPermAssignBySql">
+	 UPDATE FRAMEWORK_PERM_ASSIGN 
+        <set>
+	        <if test="userDepId != null">
+	        	USER_DEP_ID = #{userDepId} ,
+			</if>
+	        <if test="userDepType != null">
+	        	USER_DEP_TYPE = #{userDepType} ,
+			</if>
+	        <if test="permId != null">
+	        	PERM_ID = #{permId} ,
+			</if>
+	        <if test="state != null">
+	        	STATE = #{state} ,
+			</if>
+	        <if test="remark != null">
+	        	REMARK = #{remark} ,
+			</if>
+	        <if test="createUserId != null">
+	        	CREATE_USER_ID = #{createUserId} ,
+			</if>
+	        <if test="createTime != null">
+	        	CREATE_TIME = #{createTime} ,
+			</if>
+	        <if test="modifyUserId != null">
+	        	MODIFY_USER_ID = #{modifyUserId} ,
+			</if>
+	        <if test="modifyTime != null">
+	        	MODIFY_TIME = #{modifyTime} ,
+			</if>
+	        <if test="version != null">
+	        	VERSION = #{version} 
+			</if>
+	        
+	    </set>
+	   <where>
+			
+			<if test="userDepId != null">
+				 USER_DEP_ID = #{userDepId}
+			</if>
+		</where>
+	</update>
+	
+</mapper>
+

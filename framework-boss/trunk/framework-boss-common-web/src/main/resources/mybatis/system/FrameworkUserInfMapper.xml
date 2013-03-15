@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+
+<mapper namespace="com.allinpay.its.boss.system.permission.dao.IFrameworkUserInfDao">
+	<resultMap id="FrameworkUserInfResult" type="FrameworkUserInf">
+		<result property="id" column="ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="userPassword" column="USER_PASSWORD" />
+		<result property="state" column="STATE" />
+		<result property="userInstId" column="USER_INST_ID" />
+		<result property="realName" column="REAL_NAME" />
+		<result property="mobile" column="MOBILE" />
+		<result property="contactPhone" column="CONTACT_PHONE" />
+		<result property="contactEmail" column="CONTACT_EMAIL" />
+		<result property="attributiveOrg" column="ATTRIBUTIVE_ORG" />
+		<result property="misc1" column="MISC1" />
+		<result property="misc2" column="MISC2" />
+		<result property="userDesc" column="USER_DESC" />
+		<result property="recUpdUsr" column="REC_UPD_USR" />
+		<result property="rowCrtTs" column="ROW_CRT_TS" />
+		<result property="recUpdTs" column="REC_UPD_TS" />
+	</resultMap>
+	<select id="selectAllFrameworkUserInf" resultMap="FrameworkUserInfResult">
+		SELECT * FROM
+		FRAMEWORK_USER_INF
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="FrameworkUserInf_columns">
+	    <![CDATA[
+        ID ,USER_NAME ,USER_PASSWORD ,STATE ,USER_INST_ID ,REAL_NAME ,MOBILE ,CONTACT_PHONE ,CONTACT_EMAIL ,ATTRIBUTIVE_ORG ,MISC1 ,MISC2 ,USER_DESC ,REC_UPD_USR ,ROW_CRT_TS ,REC_UPD_TS 
+	    ]]>
+	</sql>
+	
+	<sql id="FrameworkUserInf_columns_as">
+	    <![CDATA[
+        ID as id,USER_NAME as userName,USER_PASSWORD as userPassword,STATE as state,USER_INST_ID as userInstId,REAL_NAME as realName,MOBILE as mobile,CONTACT_PHONE as contactPhone,CONTACT_EMAIL as contactEmail,ATTRIBUTIVE_ORG as attributiveOrg,MISC1 as misc1,MISC2 as misc2,USER_DESC as userDesc,REC_UPD_USR as recUpdUsr,ROW_CRT_TS as rowCrtTs,REC_UPD_TS as recUpdTs
+	    ]]>
+	</sql>
+
+	<insert id="insert_FrameworkUserInf" parameterType="FrameworkUserInf">
+    <![CDATA[
+        INSERT INTO FRAMEWORK_USER_INF (
+        	ID ,
+        	USER_NAME ,
+        	USER_PASSWORD ,
+        	STATE ,
+        	USER_INST_ID ,
+        	REAL_NAME ,
+        	MOBILE ,
+        	CONTACT_PHONE ,
+        	CONTACT_EMAIL ,
+        	ATTRIBUTIVE_ORG ,
+        	MISC1 ,
+        	MISC2 ,
+        	USER_DESC ,
+        	REC_UPD_USR ,
+        	ROW_CRT_TS ,
+        	REC_UPD_TS 
+        ) VALUES (
+        	#{id,jdbcType=NUMERIC} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{userPassword,jdbcType=VARCHAR} ,
+        	#{state,jdbcType=VARCHAR} ,
+        	#{userInstId,jdbcType=VARCHAR} ,
+        	#{realName,jdbcType=VARCHAR} ,
+        	#{mobile,jdbcType=VARCHAR} ,
+        	#{contactPhone,jdbcType=VARCHAR} ,
+        	#{contactEmail,jdbcType=VARCHAR} ,
+        	#{attributiveOrg,jdbcType=NUMERIC} ,
+        	#{misc1,jdbcType=VARCHAR} ,
+        	#{misc2,jdbcType=VARCHAR} ,
+        	#{userDesc,jdbcType=VARCHAR} ,
+        	#{recUpdUsr,jdbcType=VARCHAR} ,
+        	#{rowCrtTs,jdbcType=DATE} ,
+        	#{recUpdTs,jdbcType=DATE} 
+        )
+    ]]>
+		<!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_USER_INF.NEXTVAL as ID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateById_FrameworkUserInf" parameterType="FrameworkUserInf">
+        UPDATE FRAMEWORK_USER_INF 
+        <set>
+	        <if test="userName != null">
+	        	USER_NAME = #{userName} ,
+			</if>
+	        <if test="userPassword != null">
+	        	USER_PASSWORD = #{userPassword} ,
+			</if>
+	        <if test="state != null">
+	        	STATE = #{state} ,
+			</if>
+	        <if test="userInstId != null">
+	        	USER_INST_ID = #{userInstId} ,
+			</if>
+	        <if test="realName != null">
+	        	REAL_NAME = #{realName} ,
+			</if>
+	        <if test="mobile != null">
+	        	MOBILE = #{mobile} ,
+			</if>
+	        <if test="contactPhone != null">
+	        	CONTACT_PHONE = #{contactPhone} ,
+			</if>
+	        <if test="contactEmail != null">
+	        	CONTACT_EMAIL = #{contactEmail} ,
+			</if>
+	        <if test="attributiveOrg != null">
+	        	ATTRIBUTIVE_ORG = #{attributiveOrg} ,
+			</if>
+	        <if test="misc1 != null">
+	        	MISC1 = #{misc1} ,
+			</if>
+	        <if test="misc2 != null">
+	        	MISC2 = #{misc2} ,
+			</if>
+	        <if test="userDesc != null">
+	        	USER_DESC = #{userDesc} ,
+			</if>
+	        <if test="recUpdUsr != null">
+	        	REC_UPD_USR = #{recUpdUsr} ,
+			</if>
+	        <if test="rowCrtTs != null">
+	        	ROW_CRT_TS = #{rowCrtTs} ,
+			</if>
+	        <if test="recUpdTs != null">
+	        	REC_UPD_TS = #{recUpdTs} 
+			</if>
+	        
+	    </set>
+        WHERE 
+	        ID = #{id} 
+	</update>
+
+	<delete id="deleteById_FrameworkUserInf">
+    <![CDATA[
+        DELETE FROM FRAMEWORK_USER_INF WHERE
+        ID = #{id} 
+    ]]>
+	</delete>
+
+	<select id="selectByIdFrameworkUserInf" resultMap="FrameworkUserInfResult">
+		SELECT
+		<include refid="FrameworkUserInf_columns" />
+	    <![CDATA[
+	        FROM FRAMEWORK_USER_INF 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+
+	<sql id="selectFrameworkUserInf_where">
+		<where>
+			
+			<if test="id != null">
+				and ID = #{id}
+			</if>
+			
+			<if test="userName != null">
+				and USER_NAME = #{userName}
+			</if>
+			
+			<if test="userPassword != null">
+				and USER_PASSWORD = #{userPassword}
+			</if>
+			
+			<if test="state != null">
+				and STATE = #{state}
+			</if>
+			
+			<if test="userInstId != null">
+				and USER_INST_ID = #{userInstId}
+			</if>
+			
+			<if test="realName != null">
+				and REAL_NAME = #{realName}
+			</if>
+			
+			<if test="mobile != null">
+				and MOBILE = #{mobile}
+			</if>
+			
+			<if test="contactPhone != null">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			
+			<if test="contactEmail != null">
+				and CONTACT_EMAIL = #{contactEmail}
+			</if>
+			
+			<if test="attributiveOrg != null">
+				and ATTRIBUTIVE_ORG = #{attributiveOrg}
+			</if>
+			
+			<if test="misc1 != null">
+				and MISC1 = #{misc1}
+			</if>
+			
+			<if test="misc2 != null">
+				and MISC2 = #{misc2}
+			</if>
+			
+			<if test="userDesc != null">
+				and USER_DESC = #{userDesc}
+			</if>
+			
+			<if test="recUpdUsr != null">
+				and REC_UPD_USR = #{recUpdUsr}
+			</if>
+			<if test="rowCrtTsBegin != null">
+				and ROW_CRT_TS >= #{rowCrtTsBegin}
+			</if>
+			<if test="rowCrtTsEnd != null">
+				and ROW_CRT_TS &lt;= #{rowCrtTsEnd}
+			</if>
+			<if test="recUpdTsBegin != null">
+				and REC_UPD_TS >= #{recUpdTsBegin}
+			</if>
+			<if test="recUpdTsEnd != null">
+				and REC_UPD_TS &lt;= #{recUpdTsEnd}
+			</if>
+		</where>
+	</sql>
+
+	<select id="select_FrameworkUserInfsCount" resultType="long">
+		SELECT count(*) FROM FRAMEWORK_USER_INF
+		<include refid="selectFrameworkUserInf_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_FrameworkUserInfs" resultMap="FrameworkUserInfResult">
+		SELECT
+		<include refid="FrameworkUserInf_columns" />
+		FROM FRAMEWORK_USER_INF
+		<include refid="selectFrameworkUserInf_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="FrameworkUserInf">
+		SELECT
+		<include refid="FrameworkUserInf_columns_as" />
+		 FROM FRAMEWORK_USER_INF
+		WHERE 
+		        ID = #{pk_Id} 
+	</select>
+	
+	
+	<select id="findListByObj" resultMap="FrameworkUserInfResult">
+		SELECT
+		<include refid="FrameworkUserInf_columns" />
+		FROM FRAMEWORK_USER_INF
+		<include refid="selectFrameworkUserInf_where" />
+	</select>
+</mapper>
+

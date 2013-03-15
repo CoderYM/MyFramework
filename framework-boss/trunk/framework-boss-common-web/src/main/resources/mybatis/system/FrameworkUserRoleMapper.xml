@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+
+<mapper namespace="com.allinpay.its.boss.system.permission.dao.IFrameworkUserRoleDao">
+	<resultMap id="FrameworkUserRoleResult" type="FrameworkUserRole">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="sysRoleId" column="SYS_ROLE_ID" />
+		<result property="state" column="STATE" />
+		<result property="remark" column="REMARK" />
+		<result property="createUserId" column="CREATE_USER_ID" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="modifyUserId" column="MODIFY_USER_ID" />
+		<result property="modifyTime" column="MODIFY_TIME" />
+		<result property="version" column="VERSION" />
+	</resultMap>
+	<select id="selectAllFrameworkUserRole" resultMap="FrameworkUserRoleResult">
+		SELECT * FROM
+		FRAMEWORK_USER_ROLE
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="FrameworkUserRole_columns">
+	    <![CDATA[
+        ID ,USER_ID ,SYS_ROLE_ID ,STATE ,REMARK ,CREATE_USER_ID ,CREATE_TIME ,MODIFY_USER_ID ,MODIFY_TIME ,VERSION 
+	    ]]>
+	</sql>
+	
+	<sql id="FrameworkUserRole_columns_as">
+	    <![CDATA[
+        ID as id,USER_ID as userId,SYS_ROLE_ID as sysRoleId,STATE as state,REMARK as remark,CREATE_USER_ID as createUserId,CREATE_TIME as createTime,MODIFY_USER_ID as modifyUserId,MODIFY_TIME as modifyTime,VERSION as version
+	    ]]>
+	</sql>
+
+	<insert id="insert_FrameworkUserRole" parameterType="FrameworkUserRole">
+    <![CDATA[
+        INSERT INTO FRAMEWORK_USER_ROLE (
+        	ID ,
+        	USER_ID ,
+        	SYS_ROLE_ID ,
+        	STATE ,
+        	REMARK ,
+        	CREATE_USER_ID ,
+        	CREATE_TIME ,
+        	MODIFY_USER_ID ,
+        	MODIFY_TIME ,
+        	VERSION 
+        ) VALUES (
+        	#{id,jdbcType=NUMERIC} ,
+        	#{userId,jdbcType=NUMERIC} ,
+        	#{sysRoleId,jdbcType=NUMERIC} ,
+        	#{state,jdbcType=VARCHAR} ,
+        	#{remark,jdbcType=VARCHAR} ,
+        	#{createUserId,jdbcType=NUMERIC} ,
+        	#{createTime,jdbcType=DATE} ,
+        	#{modifyUserId,jdbcType=NUMERIC} ,
+        	#{modifyTime,jdbcType=DATE} ,
+        	#{version,jdbcType=NUMERIC} 
+        )
+    ]]>
+		<!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_USER_ROLE.NEXTVAL as ID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateById_FrameworkUserRole" parameterType="FrameworkUserRole">
+        UPDATE FRAMEWORK_USER_ROLE 
+        <set>
+	        <if test="userId != null">
+	        	USER_ID = #{userId} ,
+			</if>
+	        <if test="sysRoleId != null">
+	        	SYS_ROLE_ID = #{sysRoleId} ,
+			</if>
+	        <if test="state != null">
+	        	STATE = #{state} ,
+			</if>
+	        <if test="remark != null">
+	        	REMARK = #{remark} ,
+			</if>
+	        <if test="createUserId != null">
+	        	CREATE_USER_ID = #{createUserId} ,
+			</if>
+	        <if test="createTime != null">
+	        	CREATE_TIME = #{createTime} ,
+			</if>
+	        <if test="modifyUserId != null">
+	        	MODIFY_USER_ID = #{modifyUserId} ,
+			</if>
+	        <if test="modifyTime != null">
+	        	MODIFY_TIME = #{modifyTime} ,
+			</if>
+	        <if test="version != null">
+	        	VERSION = #{version} 
+			</if>
+	        
+	    </set>
+        WHERE 
+	        ID = #{id} 
+	</update>
+
+	<delete id="deleteById_FrameworkUserRole">
+    <![CDATA[
+        DELETE FROM FRAMEWORK_USER_ROLE WHERE
+        ID = #{id} 
+    ]]>
+	</delete>
+
+	<select id="selectByIdFrameworkUserRole" resultMap="FrameworkUserRoleResult">
+		SELECT
+		<include refid="FrameworkUserRole_columns" />
+	    <![CDATA[
+	        FROM FRAMEWORK_USER_ROLE 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+
+	<sql id="selectFrameworkUserRole_where">
+		<where>
+			
+			<if test="id != null">
+				and ID = #{id}
+			</if>
+			
+			<if test="userId != null">
+				and USER_ID = #{userId}
+			</if>
+			
+			<if test="sysRoleId != null">
+				and SYS_ROLE_ID = #{sysRoleId}
+			</if>
+			
+			<if test="state != null">
+				and STATE = #{state}
+			</if>
+			
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+			
+			<if test="createUserId != null">
+				and CREATE_USER_ID = #{createUserId}
+			</if>
+			<if test="createTimeBegin != null">
+				and CREATE_TIME >= #{createTimeBegin}
+			</if>
+			<if test="createTimeEnd != null">
+				and CREATE_TIME &lt;= #{createTimeEnd}
+			</if>
+			
+			<if test="modifyUserId != null">
+				and MODIFY_USER_ID = #{modifyUserId}
+			</if>
+			<if test="modifyTimeBegin != null">
+				and MODIFY_TIME >= #{modifyTimeBegin}
+			</if>
+			<if test="modifyTimeEnd != null">
+				and MODIFY_TIME &lt;= #{modifyTimeEnd}
+			</if>
+			
+			<if test="version != null">
+				and VERSION = #{version}
+			</if>
+		</where>
+	</sql>
+
+	<select id="select_FrameworkUserRolesCount" resultType="long">
+		SELECT count(*) FROM FRAMEWORK_USER_ROLE
+		<include refid="selectFrameworkUserRole_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_FrameworkUserRoles" resultMap="FrameworkUserRoleResult">
+		SELECT
+		<include refid="FrameworkUserRole_columns" />
+		FROM FRAMEWORK_USER_ROLE
+		<include refid="selectFrameworkUserRole_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="FrameworkUserRole">
+		SELECT
+		<include refid="FrameworkUserRole_columns_as" />
+		 FROM FRAMEWORK_USER_ROLE
+		WHERE 
+		        ID = #{pk_Id} 
+	</select>
+	
+	
+	<select id="findListByObj" resultMap="FrameworkUserRoleResult">
+		SELECT
+		<include refid="FrameworkUserRole_columns" />
+		FROM FRAMEWORK_USER_ROLE
+		<include refid="selectFrameworkUserRole_where" />
+	</select>
+	
+	<update id="updateFrameworkUserRoleBySql">
+	UPDATE FRAMEWORK_USER_ROLE 
+        <set>
+	        <if test="userId != null">
+	        	USER_ID = #{userId} ,
+			</if>
+	        <if test="sysRoleId != null">
+	        	SYS_ROLE_ID = #{sysRoleId} ,
+			</if>
+	        <if test="state != null">
+	        	STATE = #{state} ,
+			</if>
+	        <if test="remark != null">
+	        	REMARK = #{remark} ,
+			</if>
+	        <if test="createUserId != null">
+	        	CREATE_USER_ID = #{createUserId} ,
+			</if>
+	        <if test="createTime != null">
+	        	CREATE_TIME = #{createTime} ,
+			</if>
+	        <if test="modifyUserId != null">
+	        	MODIFY_USER_ID = #{modifyUserId} ,
+			</if>
+	        <if test="modifyTime != null">
+	        	MODIFY_TIME = #{modifyTime} ,
+			</if>
+	        <if test="version != null">
+	        	VERSION = #{version} 
+			</if>
+	        
+	    </set>
+        WHERE 
+	        USER_ID = #{userId}
+	
+	</update>
+	
+	
+</mapper>
+

@@ -1,0 +1,124 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- 自动注册DefaultAnnotationHandlerMapping 与AnnotationMethodHandlerAdapter 
+		不推荐使用的配置,对自定义拦截器使用起来不方便
+		 <mvc:annotation-driven /> 
+	-->
+	
+	
+	<!-- 自定义拦截器配置手动配置更灵活,可以从拦截器中获取想要的类名,方法名等信息推荐使用,而且这种配置 只拦截@Controller,不需要在拦截器中过滤静态文件 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean class="com.allinpay.its.boss.framework.interceptor.SysPermissionInterceptor" />
+			</list>
+		</property>
+	</bean>
+	
+
+	<!-- 该种配置不是很好用,过滤所有的请求,包括静态文件
+	 <mvc:interceptors> 
+	 	<mvc:interceptor> 
+		 	<mvc:mapping path="/**"/> 
+			<bean class="com.allinpay.its.boss.framework.interceptor.SysPermissionInterceptor"></bean> 
+		</mvc:interceptor> 
+	</mvc:interceptors> 
+	-->
+
+	<!-- 这里手动注册springmvc的注解依赖,可以灵活配置  -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+			<ref bean="textHttpMessageConverter"/>
+			<ref bean="jsonHttpMessageConverter"/>
+  
+            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"></bean>  
+  
+            <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"></bean>  
+  
+            <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"></bean>  
+  
+            <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter"></bean> 
+            <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"></bean> 
+			</list>
+		</property>
+
+		<property name="webBindingInitializer"> 
+		  <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer"> 
+		  </bean> 
+		</property>
+	</bean>
+	
+	<context:annotation-config/> 
+	
+	<!-- 实现 RESTful的风格,显示指定需要转换的响应格式类型 -->
+	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller" />
+	<!-- xml -->
+	<bean id="xmlMessageConverter"
+		class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<constructor-arg ref="xstreamMarshaller" />
+		<property name="supportedMediaTypes" value="application/xml" />
+	</bean>
+
+	<!-- json -->
+	<bean id="jsonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="prefixJson" value="false" />
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value> 
+			</list>
+		</property>
+	</bean>
+	<!-- text -->
+	<bean id="textHttpMessageConverter" 
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+				<list>
+					<value>text/plain;charset=UTF-8</value>
+				</list>
+		</property>
+	</bean>
+
+	<!-- 静态文件 -->
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+
+	
+	<!-- 需要扫描的标注了@Controller的类 -->
+	<context:component-scan base-package="com.allinpay.its.boss">
+		<context:include-filter type="regex"
+			expression=".*.*.action.*" />
+	</context:component-scan>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix">
+			<value>/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+<!-- 上传文件配置支持 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="1024000000"></property>
+	</bean>
+
+
+</beans>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+
+<mapper namespace="com.allinpay.its.boss.system.permission.dao.IFrameworkSysPermissionDao">
+	<resultMap id="FrameworkSysPermissionResult" type="FrameworkSysPermission">
+		<result property="id" column="ID" />
+		<result property="sysMenuId" column="SYS_MENU_ID" />
+		<result property="permissionCode" column="PERMISSION_CODE" />
+		<result property="permissionName" column="PERMISSION_NAME" />
+		<result property="permissionDescription" column="PERMISSION_DESCRIPTION" />
+		<result property="state" column="STATE" />
+		<result property="remark" column="REMARK" />
+		<result property="createUserId" column="CREATE_USER_ID" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="modifyUserId" column="MODIFY_USER_ID" />
+		<result property="modifyTime" column="MODIFY_TIME" />
+		<result property="version" column="VERSION" />
+	</resultMap>
+	<select id="selectAllFrameworkSysPermission" resultMap="FrameworkSysPermissionResult">
+		SELECT * FROM
+		FRAMEWORK_SYS_PERMISSION
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="FrameworkSysPermission_columns">
+	    <![CDATA[
+        ID ,SYS_MENU_ID ,PERMISSION_CODE ,PERMISSION_NAME ,PERMISSION_DESCRIPTION ,STATE ,REMARK ,CREATE_USER_ID ,CREATE_TIME ,MODIFY_USER_ID ,MODIFY_TIME ,VERSION 
+	    ]]>
+	</sql>
+	
+	<sql id="FrameworkSysPermission_columns_as">
+	    <![CDATA[
+        ID as id,SYS_MENU_ID as sysMenuId,PERMISSION_CODE as permissionCode,PERMISSION_NAME as permissionName,PERMISSION_DESCRIPTION as permissionDescription,STATE as state,REMARK as remark,CREATE_USER_ID as createUserId,CREATE_TIME as createTime,MODIFY_USER_ID as modifyUserId,MODIFY_TIME as modifyTime,VERSION as version
+	    ]]>
+	</sql>
+
+	<insert id="insert_FrameworkSysPermission" parameterType="FrameworkSysPermission">
+    <![CDATA[
+        INSERT INTO FRAMEWORK_SYS_PERMISSION (
+        	ID ,
+        	SYS_MENU_ID ,
+        	PERMISSION_CODE ,
+        	PERMISSION_NAME ,
+        	PERMISSION_DESCRIPTION ,
+        	STATE ,
+        	REMARK ,
+        	CREATE_USER_ID ,
+        	CREATE_TIME ,
+        	MODIFY_USER_ID ,
+        	MODIFY_TIME ,
+        	VERSION 
+        ) VALUES (
+        	#{id,jdbcType=NUMERIC} ,
+        	#{sysMenuId,jdbcType=NUMERIC} ,
+        	#{permissionCode,jdbcType=VARCHAR} ,
+        	#{permissionName,jdbcType=VARCHAR} ,
+        	#{permissionDescription,jdbcType=VARCHAR} ,
+        	#{state,jdbcType=VARCHAR} ,
+        	#{remark,jdbcType=VARCHAR} ,
+        	#{createUserId,jdbcType=NUMERIC} ,
+        	#{createTime,jdbcType=DATE} ,
+        	#{modifyUserId,jdbcType=NUMERIC} ,
+        	#{modifyTime,jdbcType=DATE} ,
+        	#{version,jdbcType=NUMERIC} 
+        )
+    ]]>
+    <!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="BEFORE">
+			SELECT SEQ_FRAMEWORK_SYS_PERMISSION.NEXTVAL as ID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateById_FrameworkSysPermission" parameterType="FrameworkSysPermission">
+    <![CDATA[
+        UPDATE FRAMEWORK_SYS_PERMISSION SET
+	        SYS_MENU_ID = #{sysMenuId} ,
+	        PERMISSION_CODE = #{permissionCode} ,
+	        PERMISSION_NAME = #{permissionName} ,
+	        PERMISSION_DESCRIPTION = #{permissionDescription} ,
+	        STATE = #{state} ,
+	        REMARK = #{remark} ,
+	        CREATE_USER_ID = #{createUserId} ,
+	        CREATE_TIME = #{createTime} ,
+	        MODIFY_USER_ID = #{modifyUserId} ,
+	        MODIFY_TIME = #{modifyTime} ,
+	        VERSION = #{version} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+	<delete id="deleteById_FrameworkSysPermission">
+    <![CDATA[
+        DELETE FROM FRAMEWORK_SYS_PERMISSION WHERE
+        ID = #{id} 
+    ]]>
+	</delete>
+
+	<select id="selectByIdFrameworkSysPermission" resultMap="FrameworkSysPermissionResult">
+		SELECT
+		<include refid="FrameworkSysPermission_columns" />
+	    <![CDATA[
+	        FROM FRAMEWORK_SYS_PERMISSION 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+
+	<sql id="selectFrameworkSysPermission_where">
+		<where>
+			
+			<if test="id != null">
+				and ID = #{id}
+			</if>
+			
+			<if test="sysMenuId != null">
+				and SYS_MENU_ID = #{sysMenuId}
+			</if>
+			
+			<if test="permissionCode != null">
+				and PERMISSION_CODE = #{permissionCode}
+			</if>
+			
+			<if test="permissionName != null">
+				and PERMISSION_NAME = #{permissionName}
+			</if>
+			
+			<if test="permissionDescription != null">
+				and PERMISSION_DESCRIPTION = #{permissionDescription}
+			</if>
+			
+			<if test="state != null">
+				and STATE = #{state}
+			</if>
+			
+			<if test="remark != null">
+				and REMARK = #{remark}
+			</if>
+			
+			<if test="createUserId != null">
+				and CREATE_USER_ID = #{createUserId}
+			</if>
+			<if test="createTimeBegin != null">
+				and CREATE_TIME >= #{createTimeBegin}
+			</if>
+			<if test="createTimeEnd != null">
+				and CREATE_TIME &lt;= #{createTimeEnd}
+			</if>
+			
+			<if test="modifyUserId != null">
+				and MODIFY_USER_ID = #{modifyUserId}
+			</if>
+			<if test="modifyTimeBegin != null">
+				and MODIFY_TIME >= #{modifyTimeBegin}
+			</if>
+			<if test="modifyTimeEnd != null">
+				and MODIFY_TIME &lt;= #{modifyTimeEnd}
+			</if>
+			
+			<if test="version != null">
+				and VERSION = #{version}
+			</if>
+		</where>
+	</sql>
+
+	<select id="select_FrameworkSysPermissionsCount" resultType="long">
+		SELECT count(*) FROM FRAMEWORK_SYS_PERMISSION
+		<include refid="selectFrameworkSysPermission_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_FrameworkSysPermissions" resultMap="FrameworkSysPermissionResult">
+		SELECT
+		<include refid="FrameworkSysPermission_columns" />
+		FROM FRAMEWORK_SYS_PERMISSION
+		<include refid="selectFrameworkSysPermission_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="FrameworkSysPermission">
+		SELECT
+		<include refid="FrameworkSysPermission_columns_as" />
+		 FROM FRAMEWORK_SYS_PERMISSION
+		WHERE 
+		        ID = #{pk_Id} 
+	</select>
+
+	<select id="findListByObj" resultMap="FrameworkSysPermissionResult">
+		SELECT
+		<include refid="FrameworkSysPermission_columns" />
+		FROM FRAMEWORK_SYS_PERMISSION
+		<include refid="selectFrameworkSysPermission_where" />
+	</select>
+	
+	<select id="getPermListByUserIdOrMenuId" resultMap="FrameworkSysPermissionResult">
+	SELECT
+		PM.*
+		FROM 
+		FRAMEWORK_USER_ROLE UR,
+		FRAMEWORK_PERM_ASSIGN PA,
+		FRAMEWORK_SYS_PERMISSION PM
+		WHERE
+		UR.SYS_ROLE_ID=PA.USER_DEP_ID
+		AND PA.PERM_ID=PM.ID
+		AND UR.USER_ID=#{userId}
+		AND UR.STATE='00'
+		AND PA.STATE='00'
+		AND PM.STATE='00'
+		<if test="sysMenuId != 0">
+			AND PM.SYS_MENU_ID=#{sysMenuId}
+		</if>
+	
+	</select>
+
+</mapper>
+
