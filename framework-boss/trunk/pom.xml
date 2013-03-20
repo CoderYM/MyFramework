@@ -408,12 +408,12 @@
 		<repository>
 			<id>nexus-releases</id>
 			<name>nexus release</name>
-			<url>http://192.168.103.119:8080/nexus/content/repositories/releases</url>
+			<url>http://192.168.102.165:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
 			<name>nexus snapshots</name>
-			<url>http://192.168.103.119:8080/nexus/content/repositories/snapshots</url>
+			<url>http://192.168.102.165:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	

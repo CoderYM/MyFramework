@@ -3,7 +3,11 @@ package com.allinpay.its.boss.framework.repository.mybatis.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * 
+ * @author YM
+ *
+ */
 public class MyBatisSql {
 	/** 
      * 运行期 sql 

@@ -485,10 +485,47 @@
 	</dependencies>
 	<profiles>
 		<profile>
-			<id>jdk16</id>
+			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<!-- common properties begin -->
+				<!-- app context url -->
+				<its-pg-app>127.0.0.1:8080/its-pg-app</its-pg-app>
+				<its-msg-app>127.0.0.1:8080/its-msg-app</its-msg-app>
+				<its-msg-dispatcher>127.0.0.1:8080/its-msg-dispatcher</its-msg-dispatcher>
+				<!-- app context url end -->
+				<!-- db properties -->
+				<proxool.maxConnCount>10</proxool.maxConnCount>
+				<proxool.minConnCount>5</proxool.minConnCount>
+				<proxool.statistics>1m,15m,1h,1d</proxool.statistics>
+				<proxool.simultaneousBuildThrottle>30</proxool.simultaneousBuildThrottle>
+				<proxool.trace>false</proxool.trace>
+				<db.driver.class>oracle.jdbc.driver.OracleDriver</db.driver.class>
+				<db.url>jdbc:oracle:thin:@192.168.102.160:1521:itsdb</db.url>
+				<db.username>itsdb_dev_dml</db.username>
+				<db.password>ItsDb_dev_dml</db.password>
+				<!-- db properties end -->
+				
+				<!-- common properties end -->
+				
+				<!-- TP properties define -->
+				<tp.MemcachedServerList>127.0.0.1:11211</tp.MemcachedServerList>
+				<tp.jms.brokerURL>tcp://localhost:61616</tp.jms.brokerURL>
+				<tp.jms.maxConcurrentConsumers>10</tp.jms.maxConcurrentConsumers>
+				<tp.jms.concurrentConsumers>1</tp.jms.concurrentConsumers>
+				<!-- TP properties define end -->
+				
+				<!-- boss properties begin -->
+					
+				<!-- boss properties end -->
+				
+				
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk16</id>
 			<properties>
 				<jar.source>1.6</jar.source>
 				<jar.target>1.6</jar.target>
