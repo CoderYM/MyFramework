@@ -1,0 +1,165 @@
+
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first> 
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+
+<#macro namespace>${className}.</#macro>
+
+<mapper namespace="${basepackage}.${appName}.${moduleName}.dao.I${className}Dao">
+	<resultMap id="${className}Result" type="${className}">
+		<#list table.columns as column>
+		<result property="${column.columnNameLower}" column="${column.sqlName}" />
+		</#list>
+	</resultMap>
+	<select id="selectAll${className}" resultMap="${className}Result">
+		SELECT * FROM
+		${table.sqlName}
+	</select>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="${className}_columns">
+	    <![CDATA[
+        <#list table.columns as column>${column.sqlName} <#if column_has_next>,</#if></#list>
+	    ]]>
+	</sql>
+	
+	<sql id="${className}_columns_as">
+	    <![CDATA[
+        <#list table.columns as column>${column.sqlName} as ${column.columnNameLower}<#if column_has_next>,</#if></#list>
+	    ]]>
+	</sql>
+
+	<insert id="insert_${className}" parameterType="${className}">
+    <![CDATA[
+        INSERT INTO ${table.sqlName} (
+        <#list table.columns as column>
+        	${column.sqlName} <#if column_has_next>,</#if>
+        </#list>
+        ) VALUES (
+        <#list table.columns as column>
+        	${column.mybatisFlagBegin}${column.columnNameLower},jdbcType=${column.jdbcTypeName}${column.mybatisFlagEnd} <#if column_has_next>,</#if>
+        </#list>        
+        )
+    ]]>
+		<#if table.pkColumn.columnAlias?contains("seq") >
+		<!--如果主键为sequence,则采用如下配置 mysql: type="post" SELECT select last_insert_id() 
+			sqlserver: type="post" SELECT @@identity AS ID oracle: type="pre" SELECT 
+			sequenceName.nextval AS ID FROM DUAL DB2: type="pre" values nextval for sequenceName -->
+		<selectKey resultType="java.lang.Long" keyProperty="${table.pkColumn.columnNameLower}"
+			order="BEFORE">
+			SELECT SEQ_${table.sqlName}.NEXTVAL as ${table.pkColumn.sqlName} FROM DUAL
+		</selectKey>
+		</#if>
+	</insert>
+
+	<update id="updateById_${className}" parameterType="${className}">
+        UPDATE ${table.sqlName} 
+        <set>
+	        <#list table.notPkColumns as column>
+	        <if test="${column.columnNameLower} != null">
+	        	${column.sqlName} = ${column.mybatisFlagBegin}${column.columnNameLower}${column.mybatisFlagEnd} <#if column_has_next>,</#if>
+			</if>
+	        </#list>
+	        
+	    </set>
+        WHERE 
+        	<#list table.compositeIdColumns as column>
+	        ${column.sqlName} = ${column.mybatisFlagBegin}${column.columnNameLower}${column.mybatisFlagEnd} <#if column_has_next>,</#if>
+	        </#list>
+	</update>
+
+	<delete id="deleteById_${className}">
+    <![CDATA[
+        DELETE FROM ${table.sqlName} WHERE
+        <#list table.pkColumns as column>
+        ${column.sqlName} = ${column.mybatisFlagBegin}${column.columnNameLower}${column.mybatisFlagEnd} <#if column_has_next> AND </#if>
+		</#list>
+    ]]>
+	</delete>
+	
+	<delete id="deleteByObj_${className}">
+    <![CDATA[
+        DELETE FROM ${table.sqlName} 
+    ]]>
+     <include refid="select${className}_where" />
+	</delete>
+
+	<select id="selectById${className}" resultMap="${className}Result">
+		SELECT
+		<include refid="${className}_columns" />
+	    <![CDATA[
+	        FROM ${table.sqlName} 
+	        WHERE 
+				<#list table.pkColumns as column>
+		        ${column.sqlName} = ${column.mybatisFlagBegin}${column.columnNameLower}${column.mybatisFlagEnd} <#if column_has_next> AND </#if>
+		        </#list>
+	    ]]>
+	</select>
+
+	<sql id="select${className}_where">
+		<where>
+			<#list table.columns as column>
+			<#if column.isDateTimeColumn>
+			<if test="${column.columnNameLower}Begin != null">
+				and ${column.sqlName} >= ${column.mybatisFlagBegin}${column.columnNameLower}Begin${column.mybatisFlagEnd}
+			</if>
+			<if test="${column.columnNameLower}End != null">
+				and ${column.sqlName} &lt;= ${column.mybatisFlagBegin}${column.columnNameLower}End${column.mybatisFlagEnd}
+			</if>
+			<#else>
+			
+			<if test="${column.columnNameLower} != null and ${column.columnNameLower} != ''">
+				and ${column.sqlName} = ${column.mybatisFlagBegin}${column.columnNameLower}${column.mybatisFlagEnd}
+			</if>
+			</#if>
+			</#list>
+		</where>
+	</sql>
+
+	<select id="select_${className}sCount" resultType="long">
+		SELECT count(*) FROM ${table.sqlName}
+		<include refid="select${className}_where" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 #offset#,#pageSize#,#lastRows# 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="selectPage_${className}s" resultMap="${className}Result">
+		SELECT
+		<include refid="${className}_columns" />
+		FROM ${table.sqlName}
+		<include refid="select${className}_where" />
+	</select>
+
+	<select id="findByPKId" parameterType="int" resultType="${className}">
+		SELECT
+		<include refid="${className}_columns_as" />
+		 FROM ${table.sqlName}
+		WHERE 
+		<#list table.pkColumns as column>
+		        ${column.sqlName} = ${column.mybatisFlagBegin}pk_Id${column.mybatisFlagEnd} <#if column_has_next> AND </#if>
+		</#list>
+	</select>
+	
+	
+	<select id="findListByObj" resultMap="${className}Result">
+		SELECT
+		<include refid="${className}_columns" />
+		FROM ${table.sqlName}
+		<include refid="select${className}_where" />
+	</select>
+	<#list table.columns as column>
+	<#if column.unique && !column.pk>
+	<select id="getBy${column.columnName}" resultMap="${className}Result">
+		SELECT
+		<include refid="${className}_columns" />
+	    <![CDATA[
+	        FROM ${table.sqlName} WHERE ${column.sqlName} = #${column.columnNameLower}#
+	    ]]>
+	</select>
+	</#if>
+	</#list>
+</mapper>
+

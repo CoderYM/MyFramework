@@ -1,0 +1,61 @@
+<#ftl encoding="UTF-8">
+<#assign columns = tmd.columns?sort/>
+<#assign pks = tmd.pkColumns?sort/>
+<#assign model = tmd.javaName/>
+<#assign columnSize = columns?size/>
+<#assign pkSize = pks?size/>
+/**
+ * @(#) ${model}.java
+ * module  : generated code
+ * version : 版本管理系统中的文件版本
+ * date    : ${time}
+ * name    : ${author}
+ */
+package ${package};
+
+import com.allinpay.framework.dao.ibatis.IModel;
+
+import java.util.Date;
+
+/**
+ * ${model} class.
+ *
+ * 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ * 序号   时间          作者        修改内容
+ * 1.   ${time}	  ${author}    created this class.
+ */
+public class ${model} implements IModel {
+	//Auto Generated Begin
+	
+	/**
+	 * serial Version UID.
+	 */
+	private static final long serialVersionUID = ${serialVersionUID};
+	
+	<#list columns as column>
+	/**
+	 * ${column.label}
+	 */
+	private ${column.javaType} ${column.javaName};
+	
+	</#list>
+
+	<#list columns as column>
+	/**
+	 * @return the ${column.javaName}
+	 */
+	public ${column.javaType} get${column.javaName?cap_first}() {
+		return ${column.javaName};
+	}
+
+	/**
+	 * @param ${column.name} the ${column.name} to set
+	 */
+	public void set${column.javaName?cap_first}(${column.javaType} ${column.javaName}) {
+		this.${column.javaName} = ${column.javaName};
+	}
+	
+	</#list>
+	
+	//Auto Generated End
+}

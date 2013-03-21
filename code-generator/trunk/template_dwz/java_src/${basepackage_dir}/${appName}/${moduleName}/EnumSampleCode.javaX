@@ -1,0 +1,87 @@
+/**
+ * 根据数据库表的枚举字段产生的模板代码
+ * 注意请将代码拷贝到相应的java文件中
+ */
+<#list table.columns as column>
+<#if column.enumColumn>
+/***********************************************
+ **  E${table.className}${column.columnName}.java
+ ** @author code gen
+ ************************************************/
+package ${basepackage}.util.metadata;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 用于表 ${table.sqlName}的字段${column.columnName}对应的枚举
+ */
+public  enum E${table.className}${column.columnName} {
+
+	/**
+	 * 未知
+	 */
+	UNKNOWN("99"),
+
+	<#list column.enumList as EnumMetaDada>
+	/**
+	 * ${EnumMetaDada.enumDesc}
+	 */
+	${EnumMetaDada.enumAlias}("${EnumMetaDada.enumKey}")<#if EnumMetaDada_has_next>,<#else>;</#if>
+	</#list>
+
+	String type;
+
+	 E${table.className}${column.columnName}(String type) {
+		this.type = type;
+	}
+
+	public String getValue() {
+		return type;
+	}
+
+	public static String getValue( E${table.className}${column.columnName} type) {
+		return type.getValue();
+	}
+
+	public static List< E${table.className}${column.columnName}> getAllTypes() {
+		 E${table.className}${column.columnName}[] types =  E${table.className}${column.columnName}.values();
+		List< E${table.className}${column.columnName}> result = new ArrayList< E${table.className}${column.columnName}>();
+		for (int i = 0; i < types.length; i++) {
+			result.add(types[i]);
+		}
+		return result;
+	}
+
+	private static Map<String, String> desc = new LinkedHashMap<String, String>();
+	static {
+		
+		<#list column.enumList as EnumMetaDada>
+		desc.put(${EnumMetaDada.enumAlias}.getValue(), "${EnumMetaDada.enumDesc}");
+		</#list>
+	}
+
+	/**
+	 * 返回中文描述.
+	 * 
+	 * @param Code
+	 * @return
+	 */
+	public static String getDesc(String Code) {
+		return desc.get(Code);
+	}
+
+	/**
+	 * 为前台界面下拉列表框返回代码与描述对应集合
+	 * 
+	 * @return Map
+	 */
+	public static Map<String, String> getCodes() {
+		return desc;
+	}
+}
+
+</#if>
+</#list>

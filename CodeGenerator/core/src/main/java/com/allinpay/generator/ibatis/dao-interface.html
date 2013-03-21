@@ -1,0 +1,24 @@
+<#ftl encoding="UTF-8">
+
+<#assign model = tmd.javaName/>
+/**
+ * @(#) I${model}Dao.java
+ * module  : generated code
+ * version : 版本管理系统中的文件版本
+ * date    : ${time}
+ * name    : ${author}
+ */
+package ${package};
+
+import com.allinpay.framework.dao.ibatis.IDaoSupport;
+
+/**
+ * I${model}Dao class.
+ *
+ * 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ * 序号   时间          作者        修改内容
+ * 1.   ${time}	  ${author}    created this class.
+ */
+public interface I${model}Dao extends IDaoSupport {
+
+}

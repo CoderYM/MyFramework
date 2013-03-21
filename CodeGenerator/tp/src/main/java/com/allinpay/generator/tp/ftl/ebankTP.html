@@ -1,0 +1,40 @@
+/**
+ * @(#) ${ebank?cap_first}TP.java
+ * module  : generated code
+ * version : 版本管理系统中的文件版本
+ * date    : ${time}
+ * name    : ${author}
+ */
+package com.allinpay.ets.tp.${ebankType}.${ebank};
+
+import com.allinpay.ets.tp.ITransactionSession;
+import com.allinpay.ets.tp.ITxResult;
+import com.allinpay.ets.tp.impl.AbstractTransactionProcessor;
+import com.allinpay.util.metadata.OrgCodeType;
+
+/**
+ * <pre>
+ * ${ebank?cap_first}TP class.
+ *
+ * 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ * 序号   时间          作者        修改内容
+ * 1.   ${time}	  ${author}    created this class.
+ * <pre>
+ */
+public class ${ebank?cap_first}TP extends AbstractTransactionProcessor {
+	/**
+	 * 支持的交易机构号为工行的机构号.
+	 * 以后改为从数据库中加载.
+	 */
+	public ${ebank?cap_first}TP() {
+		addSupportTxOrgId(OrgCodeType.${ebankType?upper_case}_${ebank?upper_case}.getCode());
+	}
+
+	/* (non-Javadoc)
+	 * @see com.allinpay.ets.tp.ITransactionProcessor#parseTxResult(com.allinpay.ets.tp.ITransactionSession)
+	 */
+	public ITxResult parseTxResult(ITransactionSession txSession) {
+		return null;
+	}
+
+}

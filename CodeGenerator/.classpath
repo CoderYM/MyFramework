@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="core/src/main/java"/>
+	<classpathentry kind="src" path="test/src/main/java"/>
+	<classpathentry kind="src" path="tp/src/main/java"/>
+	<classpathentry kind="src" path="sql/src/main/java"/>
+	<classpathentry kind="lib" path="/libraries/third-party/poi/poi-3.2-FINAL-20081019.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/libraries/third-party/freemarker/freemarker.jar"/>
+	<classpathentry kind="lib" path="/libraries/third-party/db2/db2java.jar"/>
+	<classpathentry kind="lib" path="/libraries/third-party/db2/db2jcc_javax.jar"/>
+	<classpathentry kind="lib" path="/libraries/third-party/db2/db2jcc_license_cu.jar"/>
+	<classpathentry kind="lib" path="/libraries/third-party/db2/db2jcc.jar"/>
+	<classpathentry kind="lib" path="/libraries/third-party/spring/spring.jar"/>
+	<classpathentry kind="lib" path="/libraries/common/commons-logging.jar"/>
+	<classpathentry kind="lib" path="/libraries/common/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="/libraries/modules/util-1.0.1.jar" sourcepath="/util"/>
+	<classpathentry kind="lib" path="/libraries/common/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/libraries/modules/FrameworkDao-1.0.1.jar" sourcepath="/FrameworkDao"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************
+本文件用于table变量的属性自定义
+ 强烈提醒: 
+ 1.如果你不想自定义配置,可以删除整个文件或是其中几列, 有定义的列才读自定义配置,没有定义的读数据库.不用一一对应
+ 2.你可以自由添加要自定义的属性，只要Table.java有set方法，并不限下面属性
+ ***********************************-->
+ 
+<!-- 
+<table sqlName="数据库表名" className="类名称" tableAlias="表的别名">
+	<column sqlName="数据库列名" columnAlias="列的别名" javaType="自定义javaType"
+	unique="是否唯一性约束" nullable="是否可以为空" pk="是否主键,在表没有主键的情况下,可以指定一个代理主键" 
+	updatable="是否可以更新" insertable="是否插入"	
+	enumString="枚举值,以分号分隔,示例值:M(1,男);F(0,女) 或者是:M(男);F(女)" 
+	enumClassName="如果枚举有值,生成的类名称将是这个,没有枚举值，该配置无用.示例值:Sex"
+	hibernateValidatorExprssion="HibernateValidator表达式: @NotNull @Min(10) @Pattern(regex=, flag=)"
+	/>
+</table>
+ -->
+<table sqlName="BIZ_ERROR_LOG" className="ErrorLog" tableAlias="异常日志表" >
+
+	<column sqlName="ID" columnAlias="seq" javaType="Long" 
+		unique="false" nullable="false" pk="true"
+		updatable="false" insertable="false" forQuery="false" forList="true"
+		enumString="" enumClassName="IdEnum"
+		hibernateValidatorExprssion=""
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="ERROR_TYPE" columnAlias="异常类型" javaType="String" 
+		unique="false" nullable="false" pk="true"
+		updatable="false" insertable="true" forQuery="true" forList="true"
+		enumString="CHANNEL(01,类型1);ERROR(02,类型2);ROUTE(03,类型3)" enumClassName="ErrorTypeEnum"
+		hibernateValidatorExprssion="@Length(max=30)"
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="ERROR_CODE" columnAlias="异常代码" javaType="String" 
+		unique="false" nullable="true" pk="false"
+		updatable="false" insertable="true" forQuery="true" forList="true"
+		enumString="" enumClassName="ErrorCodeEnum"
+		hibernateValidatorExprssion="@Length(max=30)"
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="ERROR_MSG" columnAlias="异常描述" javaType="String" 
+		unique="false" nullable="true" pk="false"
+		updatable="false" insertable="true" forQuery="true" forList="true"
+		enumString="" enumClassName="ErrorMsgEnum"
+		hibernateValidatorExprssion="@Length(max=120)"
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="CREATE_DATETIME" columnAlias="创建时间" javaType="java.util.Date" 
+		unique="false" nullable="true" pk="false"
+		updatable="false" insertable="false" forQuery="true" forList="true"
+		enumString="" enumClassName="CreateDatetimeEnum"
+		hibernateValidatorExprssion=""
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="CREATE_OPERATOR" columnAlias="创建人" javaType="String" 
+		unique="false" nullable="true" pk="false"
+		updatable="false" insertable="false" forQuery="true" forList="true"
+		enumString="" enumClassName="CreateOperatorEnum"
+		hibernateValidatorExprssion="@Length(max=20)"
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="STATUS" columnAlias="状态" javaType="String" 
+		unique="false" nullable="true" pk="false"
+		updatable="true" insertable="true" forQuery="true" forList="true"
+		enumString="PROCESSING(00,处理中);HANDLED(01,已处理)" enumClassName="StatusEnum"
+		hibernateValidatorExprssion="@Length(max=15)"
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="LAST_UPDATE_DATETIME" columnAlias="更新时间" javaType="java.util.Date" 
+		unique="false" nullable="true" pk="false"
+		updatable="false" insertable="false" forQuery="true" forList="true"
+		enumString="" enumClassName="LastUpdateDatetimeEnum"
+		hibernateValidatorExprssion=""
+		hasOne="" hasMany=""
+	/>
+
+	<column sqlName="LAST_UPDATE_OPERATOR" columnAlias="更新人" javaType="String" 
+		unique="false" nullable="true" pk="false"
+		updatable="false" insertable="false" forQuery="true" forList="true"
+		enumString="" enumClassName="LastUpdateOperatorEnum"
+		hibernateValidatorExprssion="@Length(max=20)"
+		hasOne="" hasMany=""
+	/>
+
+</table>

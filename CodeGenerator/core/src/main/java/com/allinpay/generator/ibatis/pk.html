@@ -1,0 +1,60 @@
+<#ftl encoding="UTF-8">
+<#assign columns = tmd.columns?sort/>
+<#assign pks = tmd.pkColumns?sort/>
+<#assign model = tmd.javaName/>
+/**
+ * Created at ${time} by ${author}.
+ */
+package ${package};
+
+import com.allinpay.frameworkdao.ibatis.metadata.MultiColumnPK;
+
+/**
+ * Pk${model} class.
+ *
+ * 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ * 序号   时间          作者        修改内容
+ * 1.   ${time}	  ${author}    created this class.
+ */
+public class Pk${model} extends MultiColumnPK {
+	//Auto Generated Begin
+	
+	/**
+	 * serial Version UID.
+	 */
+	private static final long serialVersionUID = ${serialVersionUID};
+	
+	<#list pks as column>
+	/**
+	 * ${column.label}
+	 */
+	private ${column.javaType} ${column.javaName};
+	
+	</#list>
+	
+	public Pk${model}() {
+		<#list pks as column>
+		addPkColumn("${column.javaName}");
+		</#list>
+	}
+
+	<#list pks as column>
+	/**
+	 * @return the ${column.javaName}
+	 */
+	public ${column.javaType} get${column.javaName?cap_first}() {
+		return ${column.javaName};
+	}
+
+	/**
+	 * @param ${column.name} the ${column.name} to set
+	 */
+	public void set${column.javaName?cap_first}(${column.javaType} ${column.javaName}) {
+		this.${column.javaName} = ${column.javaName};
+	}
+	
+	</#list>
+	
+	//Auto Generated End
+
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- ${ebankType}${ebank?cap_first}的交易处理对象 -->
+	<bean id="${ebankType}${ebank?cap_first}TP"
+		class="com.allinpay.ets.tp.${ebankType}.${ebank}.${ebank?cap_first}TP">
+		<property name="connectionService">
+			<ref bean="txConnectionService" />
+		</property>
+		<property name="orderNoService">
+			<ref local="${ebankType}${ebank?cap_first}OrderNoService" />
+		</property>
+		<property name="securityService">
+			<ref local="${ebankType}${ebank?cap_first}SecurityService" />
+		</property>
+		<property name="communicationService">
+			<ref local="${ebankType}${ebank?cap_first}CommunicationService" />
+		</property>
+	</bean>
+	
+	<!-- 把${ebankType}${ebank?cap_first}TP注册到PaymentTxService中 -->
+	<bean id="${ebankType}${ebank?cap_first}TPPaymentTxServiceRegister"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref bean="paymentTxService" />
+		</property>
+		<property name="targetMethod">
+			<value>registerTP</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<ref local="${ebankType}${ebank?cap_first}TP" />
+			</list>
+		</property>
+	</bean>
+		
+	<!-- ${ebankType}${ebank?cap_first}的机构交易号创建服务 -->
+	<bean id="${ebankType}${ebank?cap_first}OrderNoService"
+		class="com.allinpay.ets.tp.${ebankType}.${ebank}.${ebank?cap_first}OrderNoService">
+		<property name="sequenceName" value="seq_transaction_no_${ebankType}_${ebank}" />
+		<property name="dao">
+			<ref bean="CommonDao"/>
+		</property>
+	</bean>
+	
+	<!-- ${ebankType}${ebank?cap_first}的交易报文组装服务 -->
+	<bean id="${ebankType}${ebank?cap_first}TxXmlMessageService"
+		class="com.allinpay.ets.tp.${ebankType}.${ebank}.${ebank?cap_first}TxXmlMessageService"/>
+		
+	<!-- ${ebankType}${ebank?cap_first}的(参数对)交易报文组装服务 -->
+	<bean id="${ebankType}${ebank?cap_first}TxParamsMessageService"
+		class="com.allinpay.ets.tp.${ebankType}.${ebank}.${ebank?cap_first}TxParamsMessageService"/>
+		
+	<!-- 把${ebankType}${ebank?cap_first}交易报文组装服务注册到${ebankType}${ebank?cap_first}Tp中 -->
+	<bean id="${ebankType}${ebank?cap_first}TxXmlMessageServiceTPRegister"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref bean="${ebankType}${ebank?cap_first}TP" />
+		</property>
+		<property name="targetMethod">
+			<value>registerPackageServices</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<ref local="${ebankType}${ebank?cap_first}TxXmlMessageService" />
+				<ref local="${ebankType}${ebank?cap_first}TxParamsMessageService" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ${ebankType}${ebank?cap_first}的交易安全服务 -->
+	<bean id="${ebankType}${ebank?cap_first}SecurityService"
+		class="com.allinpay.ets.tp.${ebankType}.${ebank}.${ebank?cap_first}SecurityService">
+		<property name="txConnCacheHandler">
+			<ref bean="TxConnCacheHandler" />
+		</property>
+		<property name="txConnParaCacheHandler">
+			<ref bean="TxParameterCacheHandler" />
+		</property>
+		<property name="txChannelCacheHandler">
+			<ref bean="TxChannelCacheHandler" />
+		</property>
+	</bean>
+	
+	<!-- ${ebankType}${ebank?cap_first}的通讯服务 -->
+	<bean id="${ebankType}${ebank?cap_first}CommunicationService" class="com.allinpay.ets.tp.${ebankType}.${ebank}.${ebank?cap_first}CommunicationService">
+		<property name="txChannelCacheHandler">
+			<ref bean="TxChannelCacheHandler" />
+		</property>
+	</bean>
+</beans>

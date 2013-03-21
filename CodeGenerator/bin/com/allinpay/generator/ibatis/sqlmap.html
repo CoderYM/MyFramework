@@ -1,0 +1,116 @@
+<#ftl encoding="UTF-8">
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<#assign columns = tmd.columns?sort/>
+<#assign pks = tmd.pkColumns?sort/>
+<#assign tableName = tmd.tableName/>
+<#assign model = tmd.javaName/>
+<#assign columnSize = columns?size/>
+<#assign pkSize = pks?size/>
+<#assign className = model/>
+<!--
+ ! 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ ! 序号   时间          作者        修改内容
+ ! 1.   ${time}	  ${author}    created this class.
+ -->
+<sqlMap namespace="${className}">
+	<!--Auto Generated Begin-->
+	
+	<typeAlias alias="${className}" type="${modelPackage}.${className}"/>
+
+	<resultMap id="${className}Result" class="${className}">
+	  	<#list columns as column>
+  			<result property="${column.javaName}" column="${column.name}"/>
+  		</#list>
+	</resultMap>
+
+	<select id="selectAll${className}" resultMap="${className}Result">
+		SELECT * FROM ${tableName}
+	</select>
+
+	<select id="selectById${className}" parameterClass="java.util.Map" resultMap="${className}Result">
+    	SELECT * FROM ${tableName} WHERE <@generatePkExp/>
+	</select>
+
+	<insert id="insert${className}" parameterClass="${className}">
+    	<#if pkSize ==1 >
+    	<#assign pkColumn = pks[0]/>
+    	<#if pkColumn.label?contains("<seq>") >
+		<selectKey keyProperty="${pkColumn.javaName}"  resultClass="${pkColumn.javaType}">
+			values nextval for seq_${tableName}_${pkColumn.name}
+        </selectKey> 
+        </#if>
+    	</#if>
+		INSERT INTO ${tableName} (
+			<@generateColumnList/>
+		) VALUES (
+			<@generateColumnValueList/>
+    	)
+	</insert>
+
+	<update id="updateById${className}" parameterClass="${className}">
+		UPDATE ${tableName} SET
+			<@generateColumnNameValueList/>
+    	WHERE <@generatePkExp/>
+  	</update>
+
+	<delete id="deleteById${className}" parameterClass="java.util.Map">
+		DELETE FROM ${tableName} WHERE <@generatePkExp/>
+	</delete>
+	
+	<#list columns as column>
+	<#if column.label?contains("<query>")>
+	<select id="selectBy${className}${column.javaName?cap_first}" parameterClass="java.util.Map" resultMap="${className}Result">
+		SELECT * FROM ${tableName} WHERE ${column.name} = #${column.javaName}#
+	</select>
+	</#if>
+	<#if column.label?contains("<update>")>
+	<update id="update${className}${column.javaName?cap_first}ByPk" parameterClass="java.util.Map">
+		UPDATE ${tableName} SET ${column.name} = #${column.javaName}#
+		WHERE <@generatePkExp/>
+	</update>
+	</#if>
+	<#if column.label?contains("<delete>")>
+	<delete id="deleteBy${className}${column.javaName?cap_first}" parameterClass="java.util.Map">
+		DELETE FROM ${tableName} WHERE ${column.name} = #${column.javaName}#
+	</delete>
+	</#if>
+	</#list>	
+	<!--Auto Generated End-->
+</sqlMap>
+
+<#macro generatePkExp>
+	<#assign index = 1/>
+	<#list pks as pk>
+		${pk.name}=#${pk.javaName}#<#if index < pkSize> and </#if>
+		<#assign index = index+1/>
+	</#list>
+</#macro>
+
+<#macro generateColumnList>
+	<#assign index = 1/>
+	<#list columns as column>
+		${column.name}<#if index < columnSize>,</#if>
+		<#assign index = index+1/>
+	</#list>
+</#macro>
+
+<#macro generateColumnValueList>
+	<#assign index = 1/>
+	<#list columns as column>
+		<#if column.javaName?contains("createDatetime") || column.javaName?contains("lastUpdateDatetime")>current timestamp<#else>#${column.javaName}#</#if><#if index < columnSize>,</#if>
+		<#assign index = index+1/>
+	</#list>
+</#macro>
+
+<#macro generateColumnNameValueList>
+	<#assign index = 1/>
+	<#list columns as column>
+		${column.name}=<#if column.javaName?contains("lastUpdateDatetime")>current timestamp<#else>#${column.javaName}#</#if><#if index < columnSize>,</#if>
+		<#assign index = index+1/>
+	</#list>
+</#macro>

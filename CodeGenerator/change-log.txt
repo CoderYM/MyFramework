@@ -1,0 +1,2 @@
+2011-03-01	Angi.Wang	DAO接口和DAO实现包分离，不再放在一个目录下，DAO实现放在DAO接口下的impl目录下
+2011-03-08	Angi.Wang	生成的“SqlMapConfig.xml”增加module前缀，即，例如：dkf-SqlMapConfig.xml

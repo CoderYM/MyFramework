@@ -1,0 +1,78 @@
+<#ftl encoding="UTF-8">
+/**
+ * Created at ${time} by ${author}.
+ */
+package ${package};
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Meta${metadata} class.
+ *
+ * ${description}.
+ * 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ * 序号   时间          作者        修改内容
+ * 1.   ${time}	  ${author}    created this class.
+ *
+ */
+public enum Meta${metadata} {
+	<#assign index=0/>
+	<#list types as type>
+	/**
+	 * ${type.description}.
+	 */
+	<#assign index = index+1/>
+	${type.name}(${type.type})<#if index < types?size>,<#else>;</#if>
+	
+	</#list>
+	
+	Meta${metadata}(int value) {
+		this.value = value;
+	}
+	
+	/**
+	 * Value.
+	 */
+	private int value;
+	
+	/**
+	 * Comment.
+	 */
+	public final static Map<Meta${metadata}, String> ${metadata}Map = new HashMap();
+	
+	static {
+		<#list types as type>
+		${metadata}Map.put(Meta${metadata}.${type.name}, "${type.description}");
+		</#list>
+	}
+
+	/**
+	 * @return Returns the value.
+	 */
+	public int getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value The value to set.
+	 */
+	public void setValue(int value) {
+		this.value = value;
+	}
+	
+	/**
+	 * @param value
+	 * @return
+	 */
+	public static Meta${metadata} getOrderType(int value) {
+		Meta${metadata} tmpKey = null;
+        for (Meta${metadata} tmpEnum : Meta${metadata}.values()) {
+            if (tmpEnum.value == value) {
+                tmpKey = tmpEnum;
+                break;
+            }
+        }
+        return tmpKey;
+	}
+}

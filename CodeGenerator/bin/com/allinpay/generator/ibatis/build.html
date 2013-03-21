@@ -1,0 +1,64 @@
+<#ftl encoding="UTF-8">
+<#assign model = tmd.javaName/>
+<#assign token = '$'/>
+<?xml version='1.0'?>
+<!--
+   Copyright (C) 2008-2010 MySQL AB
+-->
+
+<!-- version ${token}Id: build.xml -->
+
+<project name="${moduleAliasName?cap_first}Dao" default="${moduleAliasName?cap_first}Dao-jar" basedir=".">
+	<property name="major_version" value="1"/>
+	<property name="minor_version" value="0"/>
+	<property name="subminor_version" value="1"/>
+	<property name="version_status" value=""/>
+
+	<property name="version" value="${token}{major_version}.${token}{minor_version}.${token}{subminor_version}${token}{version_status}"/>
+	<property name="prodName" value="${moduleAliasName?cap_first}Dao"/>
+	<property name="extra.version" value=""/>
+	<property name="full.version" value="${token}{version}${token}{extra.version}"/>
+	<property name="fullProdName" value="${token}{prodName}-${token}{version}${token}{extra.version}"/>
+	<property name="sourceDir" value="./src"/>
+	<property name="buildDir" value="./build"/>
+	<property name="distDir" value="E:/dev-workspace/libraries/modules"/>
+	<property name="lib" value="E:/dev-workspace/libraries"/>
+	<property name="junit.results" value="${token}{buildDir}/junit"/>
+
+	<path id="project.build.classpath">
+		<fileset dir="${token}{lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${token}{buildDir}" />
+		<delete file="${token}{distDir}/${token}{fullProdName}.jar" />
+	</target>
+	
+	<target name="clean">
+		<delete dir="${token}{buildDir}" />
+	</target>
+	
+	<target name="compile" depends="clean,init">
+		<javac sourcepath="" srcdir="model\src\main\java:dao\src\main\java" 
+			encoding="utf-8"
+			destdir="${token}{buildDir}" 
+			deprecation="off" 
+			debug="on">
+			<include name="**/*.java" />
+			<exclude name="test/**" />
+			
+			<classpath refid="project.build.classpath" />
+		</javac>
+		<copydir dest="${token}{buildDir}" src="resource"></copydir>
+	</target>
+	
+	<target name="${moduleAliasName?cap_first}Dao-jar" depends="compile">
+		<jar jarfile="${token}{distDir}/${token}{fullProdName}.jar" 
+			basedir="${token}{buildDir}/" 
+			includes="**/*.class,**/*.properties*,**/*.xml,COPYING,README" 
+			excludes="test/**" 
+			index="true"/>
+	</target>
+</project>

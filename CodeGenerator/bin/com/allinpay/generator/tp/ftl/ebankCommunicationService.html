@@ -1,0 +1,33 @@
+/**
+ * @(#) ${ebank?cap_first}CommunicationService.java
+ * module  : generated code
+ * version : 版本管理系统中的文件版本
+ * date    : ${time}
+ * name    : ${author}
+ */
+package com.allinpay.ets.tp.${ebankType}.${ebank};
+
+import java.util.Map;
+import com.allinpay.ets.tp.ITransactionSession;
+import com.allinpay.ets.tp.impl.AbstractCommunicationService;
+
+/**
+ * <pre>
+ * ${ebank?cap_first}CommunicationService class.
+ *
+ * 如果有任何对代码的修改,请按下面的格式注明修改的内容.
+ * 序号   时间          作者        修改内容
+ * 1.   ${time}	  ${author}    created this class.
+ * </pre>
+ */
+public class ${ebank?cap_first}CommunicationService extends AbstractCommunicationService {
+
+	/* (non-Javadoc)
+	 * @see com.allinpay.ets.tp.impl.AbstractCommunicationService#getRequestHeadProperties(com.allinpay.ets.tp.ITransactionSession)
+	 */
+	@Override
+	protected Map<String, String> getRequestHeadProperties(ITransactionSession txSession) {
+		return null;
+	}
+
+}
