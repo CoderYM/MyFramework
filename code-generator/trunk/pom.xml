@@ -34,14 +34,20 @@
 			<artifactId>poi</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<!-- 
+		<dependency>
 			<groupId>com.allinpay.its</groupId>
 			<artifactId>its-util</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		 -->
 	</dependencies>
 	<parent>
 		<groupId>com.allinpay.its</groupId>
-		<artifactId>its-parent</artifactId>
+		<artifactId>framework-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 </project>

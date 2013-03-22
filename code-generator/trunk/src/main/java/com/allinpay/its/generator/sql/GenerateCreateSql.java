@@ -10,12 +10,12 @@ package com.allinpay.its.generator.sql;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import com.allinpay.its.util.StringUtil;
-
 /**
  * <pre>
  * 如果有任何对代码的修改,请按下面的格式注明修改的内容. 
@@ -36,7 +36,7 @@ public class GenerateCreateSql {
 		try {
 			HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(paraFile));
 
-			if (StringUtil.isEmpty(tableName)) {
+			if (StringUtils.isBlank(tableName)) {
 				// 读取所有表
 				// Map map = new HashMap();
 				HSSFSheet sheet = workbook.getSheet("目录");

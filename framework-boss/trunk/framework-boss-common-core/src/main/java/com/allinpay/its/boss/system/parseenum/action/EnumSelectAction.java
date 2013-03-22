@@ -89,9 +89,6 @@ public class EnumSelectAction extends BaseAction {
 			for (int i = 0; i < enumsPackages.length; i++) {
 				try {
 					enumClass = Class.forName(enumsPackages[i] + cvalue);
-					if(enumClass != null){
-						break;
-					}
 				} catch (ClassNotFoundException ex) {
 					if (i == enumsPackages.length - 1) {
 						return codes;
