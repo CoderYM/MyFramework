@@ -9,7 +9,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=7" />
-	<title>通联支付</title>
+	<title>信息管理平台系统框架</title>
 
 	<script type="text/javascript">
 		$(function(){
