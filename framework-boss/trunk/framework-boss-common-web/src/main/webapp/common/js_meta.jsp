@@ -3,7 +3,7 @@
 <script src="${web_root}/js/jquery/jquery.cookie.js" type="text/javascript"></script>
 <script src="${web_root}/js/jquery/jquery.validate.min.js" type="text/javascript"></script>
 <script src="${web_root}/js/jquery/jquery.bgiframe.js" type="text/javascript"></script>
-<script src="${web_root}/js/dwz/xheditor-1.1.14-zh-cn.min.js" type="text/javascript"></script>
+<script src="${web_root}/js/dwz/xheditor/xheditor-1.1.14-zh-cn.min.js" type="text/javascript"></script>
 <script src="${web_root}/js/dwz/swfobject.js" type="text/javascript"></script>
 <script src="${web_root}/css/uploadify/scripts/jquery.uploadify.js" type="text/javascript"></script>
 <script src="${web_root}/js/dwz/dwz.min.js" type="text/javascript"></script>
